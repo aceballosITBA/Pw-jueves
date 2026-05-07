@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 const packOptions = [6, 12, 24];
 
 function formatCurrency(value) {
@@ -14,6 +16,8 @@ function getPriceByPack(basePack6, pack) {
 }
 
 export default function ProductDetail({ product, selectedPack, onPackChange }) {
+  const [imageError, setImageError] = useState(false);
+
   if (!product) {
     return (
       <section className="card product-detail-panel">
@@ -28,13 +32,22 @@ export default function ProductDetail({ product, selectedPack, onPackChange }) {
   return (
     <section className="card product-detail-panel">
       <div className="detail-main">
-        <img src={product.image} alt={product.name} />
-        <div>
+        <div className="detail-media">
+          {!imageError ? (
+            <img src={product.image} alt={product.name} onError={() => setImageError(true)} />
+          ) : (
+            <div className="product-image-placeholder detail-placeholder" aria-label={`Imagen no disponible de ${product.name}`}>
+              <span>🍺</span>
+              <p>Imagen no disponible</p>
+            </div>
+          )}
+        </div>
+        <div className="detail-info">
           <p className="product-detail-condition">Nuevo | +500 vendidos</p>
           <h2>{product.name}</h2>
           <p className="product-style">{product.style}</p>
           <p className="product-detail-price">{formatCurrency(dynamicPrice)}</p>
-          <p className="product-stock">Stock disponible</p>
+          <p className="product-stock">Stock disponible para envío inmediato</p>
           <div className="pack-buttons">
             {packOptions.map((pack) => (
               <button
@@ -43,7 +56,7 @@ export default function ProductDetail({ product, selectedPack, onPackChange }) {
                 className={pack === selectedPack ? 'active' : ''}
                 onClick={() => onPackChange(pack)}
               >
-                x{pack}
+                Pack x{pack}
               </button>
             ))}
           </div>
@@ -55,13 +68,15 @@ export default function ProductDetail({ product, selectedPack, onPackChange }) {
       </div>
       <div className="tech-sheet">
         <h3>Ficha técnica</h3>
-        <p><strong>ABV:</strong> {product.abv}</p>
-        <p><strong>IBU:</strong> {product.ibu}</p>
-        <p><strong>SRM:</strong> {product.srm}</p>
-        <p><strong>Aroma:</strong> {product.aroma}</p>
-        <p><strong>Sabor:</strong> {product.flavor}</p>
-        <p><strong>Maridaje:</strong> {product.pairing}</p>
-        <p><strong>Perfil sensorial:</strong> {product.sensoryProfile}</p>
+        <div className="tech-grid">
+          <p><strong>ABV:</strong> {product.abv}</p>
+          <p><strong>IBU:</strong> {product.ibu}</p>
+          <p><strong>SRM:</strong> {product.srm}</p>
+          <p><strong>Aroma:</strong> {product.aroma}</p>
+          <p><strong>Sabor:</strong> {product.flavor}</p>
+          <p><strong>Maridaje:</strong> {product.pairing}</p>
+          <p><strong>Perfil sensorial:</strong> {product.sensoryProfile}</p>
+        </div>
       </div>
     </section>
   );

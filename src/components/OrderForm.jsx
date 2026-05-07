@@ -29,7 +29,7 @@ export default function OrderForm({ product, selectedPack }) {
   };
 
   return (
-    <section className="card">
+    <section className="card order-section">
       <h2>Formulario de pedido</h2>
       <form onSubmit={handleSubmit} className="order-form">
         <label>
