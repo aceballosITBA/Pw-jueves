@@ -27,7 +27,7 @@ export default function HomePage() {
       <main>
         <HeroSection />
         <MarketplaceHighlights />
-        <section className="card">
+        <section className="card" id="catalogo">
           <div className="section-head">
             <h2>Destacados de la semana</h2>
           </div>
