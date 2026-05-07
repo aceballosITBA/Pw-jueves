@@ -9,14 +9,14 @@ export default function Header() {
       <input className="header-search" type="text" placeholder="Buscar por estilo, aroma o nombre de cerveza" readOnly />
 
       <nav className="header-nav" aria-label="Navegación principal">
-        <a href="#" onClick={(event) => event.preventDefault()}>Latas</a>
-        <a href="#" onClick={(event) => event.preventDefault()}>Historia</a>
-        <a href="#" onClick={(event) => event.preventDefault()}>Ofertas</a>
+        <a href="#catalogo">Latas</a>
+        <a href="#historia">Historia</a>
+        <a href="#ofertas">Ofertas</a>
       </nav>
 
       <div className="header-actions" aria-label="Accesos">
-        <a href="#" onClick={(event) => event.preventDefault()}>Mi cuenta</a>
-        <a href="#" onClick={(event) => event.preventDefault()}>Carrito</a>
+        <a href="#">Mi cuenta</a>
+        <a href="#">Carrito</a>
       </div>
     </header>
   );

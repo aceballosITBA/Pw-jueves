@@ -15,6 +15,7 @@ export default function ProductCard({ product, onSelect }) {
   return (
     <article className="product-card" onClick={() => onSelect(product)}>
       <div className="product-media">
+        <span className="offer-badge">Oferta</span>
         {!imageError ? (
           <img src={product.image} alt={product.name} onError={() => setImageError(true)} />
         ) : (
@@ -28,10 +29,11 @@ export default function ProductCard({ product, onSelect }) {
         <h3>{product.name}</h3>
         <p className="product-style">{product.style}</p>
         <p className="product-price">{formatCurrency(product.pricePack6)} <small>pack x6</small></p>
+        <p className="product-original-price">{formatCurrency(getPackPrice(product, 6) * 1.12)}</p>
         <div className="pack-chips">
-          <span>x6 {formatCurrency(getPackPrice(product, 6))}</span>
-          <span>x12 {formatCurrency(getPackPrice(product, 12))} <b>-15%</b></span>
-          <span>x24 {formatCurrency(getPackPrice(product, 24))} <b>-20%</b></span>
+          <span className="pack-chip">Pack x6</span>
+          <span className="pack-chip premium">Pack x12 <b>-15%</b></span>
+          <span className="pack-chip premium">Pack x24 <b>-20%</b></span>
         </div>
       </div>
     </article>
