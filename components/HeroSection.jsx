@@ -1,3 +1,5 @@
+"use client";
+
 const banners = [
   '/images/banners/baum-banner-1.svg',
   '/images/banners/baum-banner-2.svg',
@@ -5,18 +7,23 @@ const banners = [
 ];
 
 export default function HeroSection() {
+  const heroBanner = banners[1] || banners[0];
   return (
-    <section className="hero-section card" aria-label="Banner principal" style={{ backgroundImage: `linear-gradient(90deg, rgba(24,12,5,.78), rgba(24,12,5,.22)), url(${banners[0]})` }}>
+    <section
+      className="hero-section"
+      aria-label="Banner principal"
+      style={{ backgroundImage: `linear-gradient(95deg, rgba(12,8,6,.88), rgba(51,25,4,.48)), url(${heroBanner})` }}
+    >
       <div className="hero-content">
         <p className="hero-chip">Selección artesanal Baum</p>
-        <h2>Packs Baum destacados</h2>
-        <p className="hero-lead">Cervezas artesanales en lata, listas para compartir</p>
+        <h2>Sabores grandes para momentos gigantes</h2>
+        <p className="hero-lead">Packs de cervezas Baum con descuentos por volumen y diseño protagonista.</p>
         <div className="hero-deals">
           <span>x12 · 10% OFF</span>
           <span>x24 · 15% OFF</span>
           <span>Envío gratis desde 2 packs</span>
         </div>
-        <a href="#catalogo" className="hero-cta">Ver productos</a>
+        <a href="#catalogo" className="hero-cta">Ver catálogo</a>
       </div>
     </section>
   );
