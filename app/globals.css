@@ -1,0 +1,35 @@
+:root {
+  --bg: #111111;
+  --card: #1e1e1e;
+  --text: #f5f5f5;
+  --muted: #b8b8b8;
+  --accent: #ff9f1c;
+  --accent-2: #ffd166;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: var(--text); }
+a { color: inherit; text-decoration: none; }
+.container { width: min(1100px, 92%); margin: 0 auto; }
+.btn { background: var(--accent); color: #121212; border: none; padding: .65rem 1rem; border-radius: 8px; font-weight: 700; cursor: pointer; }
+.btn:hover { background: var(--accent-2); }
+.header, .footer { background: #0b0b0b; border-bottom: 1px solid #2d2d2d; }
+.footer { border-top: 1px solid #2d2d2d; border-bottom: none; margin-top: 2rem; }
+.header .container, .footer .container { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; }
+main { min-height: 80vh; }
+.hero { padding: 4rem 0; text-align: center; }
+.hero h1 { font-size: 2.3rem; margin-bottom: 1rem; }
+.hero p { color: var(--muted); max-width: 700px; margin: 0 auto 1rem; }
+.notice { margin-top: .75rem; color: var(--accent-2); font-size: .95rem; }
+.catalog-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; padding: 1.5rem 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+.card { background: var(--card); border: 1px solid #2f2f2f; border-radius: 10px; padding: 1rem; }
+.card img { width: 100%; height: 180px; object-fit: cover; border-radius: 6px; margin-bottom: .6rem; }
+.badge { color: #121212; background: var(--accent-2); border-radius: 999px; padding: .2rem .55rem; font-size: .8rem; font-weight: bold; }
+.metrics { display: flex; gap: .6rem; margin: .6rem 0; color: var(--muted); font-size: .9rem; }
+.filters, .panel { background: #151515; border: 1px solid #303030; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
+.filters button { margin: .2rem; }
+.detail, .form-section { background: #151515; border: 1px solid #303030; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
+input, select, textarea { width: 100%; margin-top: .35rem; margin-bottom: .75rem; padding: .55rem; border-radius: 6px; border: 1px solid #464646; background: #101010; color: var(--text); }
+.error { color: #ff7b7b; font-size: .85rem; margin: -.4rem 0 .5rem; }
+@media (max-width: 860px) { .catalog-layout { grid-template-columns: 1fr; } }
