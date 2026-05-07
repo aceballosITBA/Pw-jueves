@@ -1,9 +1,9 @@
 "use client";
 
 const banners = [
-  '/images/banners/banner-2.jpg',
   '/images/banners/baum-banner-2.svg',
   '/images/banners/baum-banner-1.svg',
+  '/images/banners/baum-banner-3.svg',
 ];
 
 export default function HeroSection() {
