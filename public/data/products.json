@@ -6,7 +6,7 @@
     "description": "Lager dorada, fresca y fácil de tomar, ideal para encuentros y picadas.",
     "pricePack6": 8082,
     "images": [
-      "/images/productos/lager.png"
+      "/images/lager.png"
     ],
     "abv": "4.7%",
     "ibu": 16,
@@ -24,9 +24,9 @@
     "description": "Rubia artesanal de perfil frutado leve y final balanceado.",
     "pricePack6": 10206,
     "images": [
-      "/images/productos/blonde-1.png",
-      "/images/productos/blonde-2.png",
-      "/images/productos/blonde-3.png"
+      "/images/blonde-1.png",
+      "/images/blonde-2.png",
+      "/images/blonde-3.png"
     ],
     "abv": "5.1%",
     "ibu": 20,
@@ -43,9 +43,7 @@
     "style": "Scottish Ale",
     "description": "Cerveza maltosa con tonos caramelo y cuerpo medio.",
     "pricePack6": 10843,
-    "images": [
-      "/images/productos/blonde-2.png"
-    ],
+    "images": [],
     "abv": "5.5%",
     "ibu": 18,
     "srm": 16,
@@ -61,9 +59,7 @@
     "style": "Honey Ale",
     "description": "Ale rubia con miel, amable y aromática.",
     "pricePack6": 11132,
-    "images": [
-      "/images/productos/blonde-3.png"
-    ],
+    "images": [],
     "abv": "5.0%",
     "ibu": 17,
     "srm": 6,
@@ -79,9 +75,7 @@
     "style": "Porter",
     "description": "Oscura con notas tostadas y cacao.",
     "pricePack6": 11130,
-    "images": [
-      "/images/productos/california-3.png"
-    ],
+    "images": [],
     "abv": "5.7%",
     "ibu": 28,
     "srm": 30,
@@ -98,9 +92,9 @@
     "description": "IPA intensa, lupulada y muy aromática.",
     "pricePack6": 18554,
     "images": [
-      "/images/productos/fuck-ipa-1.png",
-      "/images/productos/fuck-ipa-2.png",
-      "/images/productos/fuck-ipa-3.png"
+      "/images/fuck-ipa-1.png",
+      "/images/fuck-ipa-2.png",
+      "/images/fuck-ipa-3.png"
     ],
     "abv": "6.5%",
     "ibu": 62,
@@ -118,7 +112,7 @@
     "description": "IPA de cuerpo liviano con perfil costero y cítrico.",
     "pricePack6": 15120,
     "images": [
-      "/images/productos/ipa-mdp-1.png"
+      "/images/ipa-mdp-1.png"
     ],
     "abv": "5.4%",
     "ibu": 44,
@@ -136,9 +130,9 @@
     "description": "Amber lager ale con notas tostadas y final firme.",
     "pricePack6": 22589,
     "images": [
-      "/images/productos/california-1.png",
-      "/images/productos/california-2.png",
-      "/images/productos/california-3.png"
+      "/images/california-1.png",
+      "/images/california-2.png",
+      "/images/california-3.png"
     ],
     "abv": "5.8%",
     "ibu": 36,
@@ -155,9 +149,7 @@
     "style": "Red Ale",
     "description": "Ale cobriza con carácter maltoso y final seco.",
     "pricePack6": 11122,
-    "images": [
-      "/images/productos/california-2.png"
-    ],
+    "images": [],
     "abv": "5.3%",
     "ibu": 24,
     "srm": 17,
@@ -173,9 +165,7 @@
     "style": "Pale Ale",
     "description": "Pale Ale de lúpulo expresivo y final refrescante.",
     "pricePack6": 15120,
-    "images": [
-      "/images/productos/fuck-ipa-2.png"
-    ],
+    "images": [],
     "abv": "5.6%",
     "ibu": 38,
     "srm": 9,
