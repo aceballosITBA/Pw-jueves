@@ -4,10 +4,14 @@ import Footer from './components/Footer';
 import ProductFilter from './components/ProductFilter';
 import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
-import PackSelector from './components/PackSelector';
 import OrderForm from './components/OrderForm';
+import AgeGate from './components/AgeGate';
+import HeroSection from './components/HeroSection';
+import MarketplaceHighlights from './components/MarketplaceHighlights';
+import FloatingWhatsApp from './components/FloatingWhatsApp';
 
 export default function App() {
+  const [isAgeVerified, setIsAgeVerified] = useState(false);
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedPack, setSelectedPack] = useState(6);
@@ -38,10 +42,16 @@ export default function App() {
     setSelectedPack(6);
   };
 
+  if (!isAgeVerified) {
+    return <AgeGate onConfirm={() => setIsAgeVerified(true)} />;
+  }
+
   return (
     <div className="app-container">
       <Header />
       <main>
+        <HeroSection />
+        <MarketplaceHighlights />
         <ProductFilter
           styles={availableStyles}
           selectedStyle={selectedStyle}
@@ -50,11 +60,11 @@ export default function App() {
           onSearchChange={setSearchTerm}
         />
         <ProductList products={filteredProducts} onSelectProduct={handleSelectProduct} />
-        <ProductDetail product={selectedProduct} />
-        <PackSelector product={selectedProduct} selectedPack={selectedPack} onPackChange={setSelectedPack} />
+        <ProductDetail product={selectedProduct} selectedPack={selectedPack} onPackChange={setSelectedPack} />
         <OrderForm product={selectedProduct} selectedPack={selectedPack} />
       </main>
       <Footer />
+      <FloatingWhatsApp />
     </div>
   );
 }
