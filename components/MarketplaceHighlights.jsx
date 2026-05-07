@@ -1,23 +1,10 @@
 const highlights = [
-  { title: 'Envío gratis', icon: '🚚' },
-  { title: 'Más vendidos', icon: '🔥' },
-  { title: 'Menos de $20.000', icon: '💸' },
-  { title: 'Medios de pago', icon: '💳' },
-  { title: 'Packs recomendados', icon: '📦' },
+  { title: 'Envío gratis', icon: '🚚', copy: 'En compras seleccionadas.' },
+  { title: 'Más vendidos', icon: '🔥', copy: 'Etiquetas preferidas por clientes.' },
+  { title: 'Medios de pago', icon: '💳', copy: 'Tarjetas, transferencia y débito.' },
+  { title: 'Packs destacados', icon: '📦', copy: 'Ahorro por volumen x12 y x24.' },
 ];
 
 export default function MarketplaceHighlights() {
-  return (
-    <section className="highlights-grid" aria-label="Beneficios destacados">
-      {highlights.map((item) => (
-        <article key={item.title} className="highlight-item">
-          <span className="highlight-icon" aria-hidden="true">{item.icon}</span>
-          <div>
-            <h3>{item.title}</h3>
-            <p>Opciones pensadas para comprar mejor y recibir rápido.</p>
-          </div>
-        </article>
-      ))}
-    </section>
-  );
+  return <section className="highlights-grid">{highlights.map((item) => <article key={item.title} className="highlight-item"><span className="highlight-icon">{item.icon}</span><div><h3>{item.title}</h3><p>{item.copy}</p></div></article>)}</section>;
 }
