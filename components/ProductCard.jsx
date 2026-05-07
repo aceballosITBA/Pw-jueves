@@ -16,18 +16,19 @@ export default function ProductCard({ product, onSelect }) {
   return (
     <article className="product-card" onClick={() => onSelect(product)}>
       <div className="product-media">
-        <span className="offer-badge">-10%/-15%</span>
         {mainImage && !imageError ? <img src={mainImage} alt={product.name} onError={() => setImageError(true)} /> : <div className="product-image-placeholder"><span>BAUM</span><p>Imagen próximamente</p></div>}
-      </div>
-      <div className="product-content">
-        <h3>{product.name}</h3>
-        <p className="product-style">{product.style}</p>
-        <p className="product-price">{formatCurrency(product.pricePack6)} <small>pack x6</small></p>
-        <p className="product-unitary">{formatCurrency(unitPrice)} c/u</p>
-        <div className="pack-chips">
-          <span className="pack-chip">x6</span>
-          <span className="pack-chip premium">x12 {formatCurrency(calcPrice(product.pricePack6, 12))}</span>
-          <span className="pack-chip premium">x24 {formatCurrency(calcPrice(product.pricePack6, 24))}</span>
+        <div className="product-overlay" />
+        <div className="product-content">
+          <p className="product-style">{product.style}</p>
+          <h3>{product.name}</h3>
+          <p className="product-unitary">{formatCurrency(unitPrice)} c/u</p>
+          <p className="product-price">{formatCurrency(product.pricePack6)} <small>pack x6</small></p>
+          <div className="pack-chips">
+            <span className="pack-chip">x12 -10%</span>
+            <span className="pack-chip">x24 -15%</span>
+            <span className="pack-chip premium">x12 {formatCurrency(calcPrice(product.pricePack6, 12))}</span>
+            <span className="pack-chip premium">x24 {formatCurrency(calcPrice(product.pricePack6, 24))}</span>
+          </div>
         </div>
       </div>
     </article>

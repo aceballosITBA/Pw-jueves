@@ -13,7 +13,7 @@ export default function ProductDetail({ product, selectedPack, onPackChange }) {
   const selectedImage = gallery[selectedImageIndex] || null;
 
   return (
-    <section className="card product-detail-panel" id="ofertas">
+    <section className="product-detail-panel" id="ofertas">
       <div className="detail-main">
         <div>
           <div className="detail-media">
@@ -24,10 +24,11 @@ export default function ProductDetail({ product, selectedPack, onPackChange }) {
           </div>
         </div>
         <div className="detail-info">
-          <h2>{product.name}</h2><p className="product-style">{product.style}</p>
+          <p className="product-style">{product.style}</p>
+          <h2>{product.name}</h2>
           <p className="product-detail-price">{formatCurrency(calcPrice(product.pricePack6, selectedPack))}</p>
-          <p className="product-stock">Stock: {product.stock} unidades</p>
-          <div className="pack-buttons">{packOptions.map((pack) => <button key={pack} className={pack === selectedPack ? 'active' : ''} onClick={() => onPackChange(pack)}>Pack x{pack}</button>)}</div>
+          <p className="product-stock">Stock disponible: {product.stock} unidades</p>
+          <div className="pack-buttons">{packOptions.map((pack) => <button key={pack} className={pack === selectedPack ? 'active' : ''} onClick={() => onPackChange(pack)}>x{pack}</button>)}</div>
           <div className="detail-actions"><button className="buy-now">Comprar ahora</button><button className="add-cart">Agregar al carrito</button></div>
           <p>{product.description}</p>
           <div className="tech-grid"><p><strong>ABV:</strong> {product.abv}</p><p><strong>IBU:</strong> {product.ibu}</p><p><strong>SRM:</strong> {product.srm}</p><p><strong>Aroma:</strong> {product.aroma}</p><p><strong>Sabor:</strong> {product.flavor}</p><p><strong>Maridaje:</strong> {product.pairing}</p><p><strong>Perfil:</strong> {product.profile}</p></div>
