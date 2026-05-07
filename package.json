@@ -1,16 +1,18 @@
 {
-  "name": "baum-latas-web",
+  "name": "baum-react-spa",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "next": "14.2.5",
     "react": "18.3.1",
     "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "vite": "5.4.10"
   }
 }
