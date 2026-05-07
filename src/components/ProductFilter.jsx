@@ -1,7 +1,7 @@
 export default function ProductFilter({ styles, selectedStyle, searchTerm, onStyleChange, onSearchChange }) {
   return (
-    <section className="card">
-      <h2>Filtrar productos</h2>
+    <section className="card product-filter">
+      <h2>Catálogo</h2>
       <div className="filter-grid">
         <input
           type="text"
