@@ -1,9 +1,7 @@
 import ProductCard from './ProductCard';
 
 export default function ProductList({ products, onSelectProduct }) {
-  if (!products.length) {
-    return <p>No hay productos para mostrar.</p>;
-  }
+  if (!products.length) return <p>No hay productos para mostrar.</p>;
 
   return (
     <section className="product-grid">

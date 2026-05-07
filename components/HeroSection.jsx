@@ -1,29 +1,21 @@
 "use client";
 
 const banners = [
-  '/images/banners/baum-banner-1.svg',
+  '/images/banners/banner-2.jpg',
   '/images/banners/baum-banner-2.svg',
-  '/images/banners/baum-banner-3.svg',
+  '/images/banners/baum-banner-1.svg',
 ];
 
 export default function HeroSection() {
-  const heroBanner = banners[1] || banners[0];
+  const heroBanner = banners[0] || banners[1];
   return (
-    <section
-      className="hero-section"
-      aria-label="Banner principal"
-      style={{ backgroundImage: `linear-gradient(95deg, rgba(12,8,6,.88), rgba(51,25,4,.48)), url(${heroBanner})` }}
-    >
+    <section className="hero-section" aria-label="Banner principal" style={{ backgroundImage: `linear-gradient(180deg, rgba(8,8,10,.35), rgba(8,8,10,.75)), url(${heroBanner})` }}>
       <div className="hero-content">
-        <p className="hero-chip">Selección artesanal Baum</p>
-        <h2>Sabores grandes para momentos gigantes</h2>
-        <p className="hero-lead">Packs de cervezas Baum con descuentos por volumen y diseño protagonista.</p>
-        <div className="hero-deals">
-          <span>x12 · 10% OFF</span>
-          <span>x24 · 15% OFF</span>
-          <span>Envío gratis desde 2 packs</span>
-        </div>
-        <a href="#catalogo" className="hero-cta">Ver catálogo</a>
+        <p className="hero-chip">Edición destacada</p>
+        <h2>Fuck IPA</h2>
+        <p className="hero-lead">Lúpulo intenso, aroma explosivo y carácter Baum en formato premium.</p>
+        <p className="hero-price">Pack x6 desde ARS 18.554</p>
+        <a href="#catalogo" className="hero-cta">Ver productos</a>
       </div>
     </section>
   );
