@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Golden Ale",
+    "style": "Blonde Ale",
+    "image": "https://images.unsplash.com/photo-1514361892635-6d86f4d6895e?q=80&w=1200&auto=format&fit=crop",
+    "pricePack6": 18000,
+    "abv": "5.0%",
+    "ibu": 18,
+    "srm": 4,
+    "description": "Cerveza rubia, refrescante y fácil de tomar.",
+    "aroma": "Notas a cereal y pan fresco.",
+    "flavor": "Balance suave entre malta y amargor bajo.",
+    "pairing": "Pizzas, ensaladas y quesos suaves.",
+    "sensoryProfile": "Ligera, seca y limpia."
+  },
+  {
+    "id": 2,
+    "name": "Red Sunset",
+    "style": "Irish Red Ale",
+    "image": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=1200&auto=format&fit=crop",
+    "pricePack6": 21000,
+    "abv": "5.6%",
+    "ibu": 24,
+    "srm": 14,
+    "description": "Ale rojiza con perfil maltoso y final seco.",
+    "aroma": "Caramelo tenue y corteza de pan.",
+    "flavor": "Maltas tostadas ligeras con amargor equilibrado.",
+    "pairing": "Hamburguesas, carnes grilladas y empanadas.",
+    "sensoryProfile": "Media, tostada y equilibrada."
+  },
+  {
+    "id": 3,
+    "name": "Hoppy Route",
+    "style": "American IPA",
+    "image": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200&auto=format&fit=crop",
+    "pricePack6": 24000,
+    "abv": "6.5%",
+    "ibu": 55,
+    "srm": 8,
+    "description": "IPA moderna de amargor medio-alto y final seco.",
+    "aroma": "Cítricos, tropicales y pino.",
+    "flavor": "Amargor protagonista con soporte de malta.",
+    "pairing": "Comida picante, tacos y cheddar curado.",
+    "sensoryProfile": "Intensa, resinosa y frutada."
+  }
+]
