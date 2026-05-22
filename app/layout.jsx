@@ -1,4 +1,6 @@
 import './globals.css';
+import Header from '../components/Header';
+import FloatingWhatsApp from '../components/FloatingWhatsApp';
 
 export const metadata = {
   title: 'Baum Beer Store',
@@ -8,7 +10,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}
+        <FloatingWhatsApp />
+      </body>
     </html>
   );
 }

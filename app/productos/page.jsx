@@ -7,8 +7,16 @@ import ProductFilter from '../../components/ProductFilter';
 import ProductList from '../../components/ProductList';
 import ProductDetail from '../../components/ProductDetail';
 import FloatingWhatsApp from '../../components/FloatingWhatsApp';
+import CartPanel from '../../components/CartPanel';
 
 const quickCategories = ['IPA', 'Lager', 'Honey', 'Stout', 'Porter', 'Más vendidas', 'Packs x12', 'Packs x24'];
+const formatCurrency = (value) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(value);
+
+function getPackPrice(basePrice, pack) {
+  if (pack === 12) return Math.round(basePrice * 2 * 0.9);
+  if (pack === 24) return Math.round(basePrice * 4 * 0.8);
+  return basePrice;
+}
 
 function getCategoryMatch(product, category) {
   if (!category) return true;
@@ -24,6 +32,7 @@ export default function ProductosPage() {
   const [selectedStyle, setSelectedStyle] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     fetch('/data/products.json').then((response) => response.json()).then((data) => {
@@ -51,10 +60,61 @@ export default function ProductosPage() {
     setSelectedPack(6);
   };
 
+  const addToCart = (product, pack = selectedPack) => {
+    setCartItems((currentItems) => {
+      const existingItem = currentItems.find((item) => item.product.id === product.id && item.pack === pack);
+      if (existingItem) {
+        return currentItems.map((item) => (item.product.id === product.id && item.pack === pack ? { ...item, quantity: item.quantity + 1 } : item));
+      }
+      return [...currentItems, { product, pack, quantity: 1 }];
+    });
+  };
+
+  const changeQuantity = (productId, pack, quantity) => {
+    setCartItems((currentItems) => currentItems
+      .map((item) => (item.product.id === productId && item.pack === pack ? { ...item, quantity } : item))
+      .filter((item) => item.quantity > 0));
+  };
+
+  const removeItem = (productId, pack) => {
+    setCartItems((currentItems) => currentItems.filter((item) => !(item.product.id === productId && item.pack === pack)));
+  };
+
+  const clearCart = () => setCartItems([]);
+
+  const goToCart = () => {
+    const cartSection = document.getElementById('carrito');
+    cartSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const cartSummary = useMemo(() => cartItems.reduce((sum, item) => sum + getPackPrice(item.product.pricePack6, item.pack) * item.quantity, 0), [cartItems]);
+
   return (
     <div className="app-container">
       <Header />
       <main>
+        <section className="catalog-intro card">
+          <div>
+            <p className="eyebrow">Catálogo Baum</p>
+            <h1>Elegí, sumá al carrito y armá tu pedido en el momento.</h1>
+            <p>Podés filtrar por estilos, revisar el detalle de cada cerveza y dejar el pedido listo para enviar por WhatsApp.</p>
+          </div>
+          <div className="intro-stats">
+            <article>
+              <strong>{products.length}</strong>
+              <span>cervezas cargadas</span>
+            </article>
+            <article>
+              <strong>{cartItems.length}</strong>
+              <span>ítems en carrito</span>
+            </article>
+            <article>
+              <strong>{formatCurrency(cartSummary)}</strong>
+              <span>total estimado</span>
+            </article>
+          </div>
+        </section>
+
         <section className="quick-categories card">
           <div className="section-head">
             <h2>Catálogo de cervezas Baum</h2>
@@ -70,8 +130,11 @@ export default function ProductosPage() {
         </section>
 
         <ProductFilter styles={availableStyles} selectedStyle={selectedStyle} searchTerm={searchTerm} onStyleChange={setSelectedStyle} onSearchChange={setSearchTerm} />
-        <ProductList products={filteredProducts} onSelectProduct={handleSelectProduct} />
-        <ProductDetail product={selectedProduct} selectedPack={selectedPack} onPackChange={setSelectedPack} />
+        <ProductList products={filteredProducts} onSelectProduct={handleSelectProduct} onAddToCart={addToCart} />
+        <div className="product-workbench">
+          <ProductDetail product={selectedProduct} selectedPack={selectedPack} onPackChange={setSelectedPack} onAddToCart={addToCart} onGoToCart={goToCart} />
+          <CartPanel items={cartItems} onChangeQuantity={changeQuantity} onRemoveItem={removeItem} onClearCart={clearCart} />
+        </div>
       </main>
       <Footer />
       <FloatingWhatsApp />

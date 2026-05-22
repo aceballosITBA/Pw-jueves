@@ -57,7 +57,7 @@ a { color: inherit; text-decoration: none; }
 .product-content { padding: 1rem; }
 .product-content h3 { margin: 0 0 .2rem; }
 .product-style { color: #f0c26a; margin: 0 0 .55rem; }
-.product-price { margin: 0; font-size: 1.35rem; font-weight: 800; }
+.product-price { margin: 0; font-size: 1.35rem; font-weight: 800; color: #FFD700; }
 .product-original-price { margin: .25rem 0 .55rem; color: #a1afc3; text-decoration: line-through; }
 .pack-chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .75rem; }
 .pack-chip { font-size: .82rem; background: #28313e; padding: .32rem .5rem; border-radius: 999px; }
