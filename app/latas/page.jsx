@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import ProductList from '../../components/ProductList';
 import Footer from '../../components/Footer';
+import { useSearchParams } from 'next/navigation';
 
 const calcPrice = (base, pack) => {
   if (pack === 12) return Math.round(base * 2 * 0.9);
@@ -10,15 +11,21 @@ const calcPrice = (base, pack) => {
 };
 
 export default function LatasPage() {
+  const searchParams = useSearchParams();
   const [products, setProducts] = useState([]);
   const [styleFilter, setStyleFilter] = useState('all');
   const [packFilter, setPackFilter] = useState(6);
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetch('/data/products.json').then((r) => r.json()).then(setProducts).catch(() => setProducts([]));
   }, []);
+
+  useEffect(() => {
+    setSearchTerm(searchParams.get('search') || '');
+  }, [searchParams]);
 
   const styles = useMemo(() => {
     const set = new Set(products.map((p) => p.style));
@@ -26,15 +33,20 @@ export default function LatasPage() {
   }, [products]);
 
   const filtered = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
     const min = minPrice ? Number(minPrice) : -Infinity;
     const max = maxPrice ? Number(maxPrice) : Infinity;
     return products.filter((p) => {
+      if (term) {
+        const haystack = `${p.name} ${p.style} ${p.description}`.toLowerCase();
+        if (!haystack.includes(term)) return false;
+      }
       if (styleFilter !== 'all' && p.style !== styleFilter) return false;
       const packPrice = calcPrice(p.pricePack6, Number(packFilter));
       if (packPrice < min || packPrice > max) return false;
       return true;
     });
-  }, [products, styleFilter, packFilter, minPrice, maxPrice]);
+  }, [products, styleFilter, packFilter, minPrice, maxPrice, searchTerm]);
 
   const handleAddToCart = (product, pack = 6) => {
     try {
@@ -60,6 +72,7 @@ export default function LatasPage() {
         <section className="catalog-section">
           <div className="section-head">
             <h2>Latas</h2>
+            {searchTerm ? <p style={{margin:0}}>Resultados para “{searchTerm}”</p> : null}
             <div className="filters" style={{display:'flex',gap:'0.6rem',alignItems:'center'}}>
               <label style={{display:'flex',alignItems:'center',gap:6}}>
                 Estilo

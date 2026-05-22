@@ -1,10 +1,17 @@
 "use client";
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { readAuthUser } from './auth-utils';
 
 export default function Header() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [ageVerified, setAgeVerified] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [searchValue, setSearchValue] = useState(() => searchParams.get('search') || '');
+  const [authUser, setAuthUser] = useState(null);
 
   useEffect(() => {
     const read = () => {
@@ -21,56 +28,78 @@ export default function Header() {
     const onStorage = () => read();
     window.addEventListener('storage', onStorage);
     window.addEventListener('cart:updated', onStorage);
-    const readAge = () => {
+    const onAge = () => {
       try {
-        const v = localStorage.getItem('age_verified');
-        setAgeVerified(!!v);
+        setAgeVerified(!!sessionStorage.getItem('age_verified'));
       } catch (e) {
         setAgeVerified(false);
       }
     };
-    readAge();
-    const onAge = () => readAge();
+    const onAuth = () => {
+      setAuthUser(readAuthUser());
+    };
+    onAge();
+    onAuth();
     window.addEventListener('age:updated', onAge);
+    window.addEventListener('auth:updated', onAuth);
     return () => {
       window.removeEventListener('storage', onStorage);
       window.removeEventListener('cart:updated', onStorage);
       window.removeEventListener('age:updated', onAge);
+      window.removeEventListener('auth:updated', onAuth);
     };
   }, []);
+
+  useEffect(() => {
+    setSearchValue(searchParams.get('search') || '');
+  }, [searchParams]);
+
+  const goToSearch = (nextValue) => {
+    const term = nextValue.trim();
+    const nextUrl = term ? `/latas?search=${encodeURIComponent(term)}` : '/latas';
+    router.replace(nextUrl);
+  };
   if (!ageVerified) return null;
 
   return (
-    <header className="header ecommerce-header">
-      <div className="brand-wrap">
-        <Link href="/" className="brand">Baum</Link>
-      </div>
-
-      <div className="header-search-wrap" aria-label="Buscador">
-        <span className="header-search-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" role="presentation" focusable="false" aria-hidden="true">
-            <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" strokeWidth="2" />
-            <path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          </svg>
-        </span>
-        <input className="header-search" type="text" placeholder="Buscar por estilo, aroma o nombre de cerveza" readOnly />
-      </div>
-
-      <div className="header-links-group">
-        <nav className="header-nav" aria-label="Navegación principal">
-          <Link href="/latas"><span aria-hidden="true" className="header-link-icon">🥫</span><span>Latas</span></Link>
-          <Link href="/historia"><span aria-hidden="true" className="header-link-icon">📖</span><span>Historia</span></Link>
-          <Link href="/ofertas"><span aria-hidden="true" className="header-link-icon">💲</span><span>Ofertas</span></Link>
-        </nav>
-
-        <div className="header-actions" aria-label="Accesos">
-          <Link href="/mi-cuenta"><span aria-hidden="true" className="header-link-icon">👤</span><span>Mi cuenta</span></Link>
-          <Link href="/cart" className="header-cart-link">
-            <span aria-hidden="true" className="header-link-icon">🛒</span>
-            <span>Carrito</span>
-            {cartCount > 0 ? <span className="cart-badge" aria-live="polite">{cartCount}</span> : null}
-          </Link>
+    <header className="ml-header">
+      <div className="ml-left">
+        <Link href="/" className="ml-logo">Baum</Link>
+        <div className="ml-location" aria-hidden="true">
+          <span className="ml-pin">📍</span>
+          <div className="ml-location-text"><small>Enviar a</small><strong>Buenos Aires 1832</strong></div>
         </div>
+      </div>
+
+      <form className="ml-search" aria-label="Buscador" onSubmit={(e) => { e.preventDefault(); goToSearch(); }}>
+        <input
+          className="ml-search-input"
+          type="text"
+          placeholder="Buscar latas"
+          value={searchValue}
+          onChange={(e) => {
+            const nextValue = e.target.value;
+            setSearchValue(nextValue);
+            goToSearch(nextValue);
+          }}
+        />
+        <button type="submit" className="ml-search-btn" aria-label="Buscar">🔍</button>
+      </form>
+
+      <div className="ml-right">
+        <nav className="ml-nav" aria-label="Navegación principal">
+          <Link href="/latas" className="ml-nav-link">Latas</Link>
+          <Link href="/historia" className="ml-nav-link">Historia</Link>
+          {authUser ? (
+            <Link href="/mi-cuenta" className="ml-user">Hola, {authUser.name}</Link>
+          ) : (
+            <Link href="/login" className="ml-user">Ingresar</Link>
+          )}
+          <Link href="/cart" className="ml-cart" aria-label="Carrito">
+            <span className="ml-cart-icon">🛒</span>
+            {cartCount > 0 ? <span className="ml-cart-badge" aria-live="polite">{cartCount}</span> : null}
+          </Link>
+        </nav>
       </div>
     </header>
   );

@@ -17,11 +17,10 @@ export default function FloatingWhatsApp() {
   }, []);
 
   useEffect(() => {
-    const read = () => {
-      try { setAgeVerified(!!localStorage.getItem('age_verified')); } catch (e) { setAgeVerified(false); }
+    const onAge = () => {
+      try { setAgeVerified(!!sessionStorage.getItem('age_verified')); } catch (e) { setAgeVerified(false); }
     };
-    read();
-    const onAge = () => read();
+    onAge();
     window.addEventListener('age:updated', onAge);
     return () => window.removeEventListener('age:updated', onAge);
   }, []);

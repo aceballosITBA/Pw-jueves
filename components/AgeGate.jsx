@@ -22,7 +22,7 @@ export default function AgeGate({ onConfirm }) {
                 type="button"
                 className="age-gate-button"
                 onClick={() => {
-                  try { localStorage.setItem('age_verified', '1'); window.dispatchEvent(new Event('age:updated')); } catch (e) {}
+                  try { sessionStorage.setItem('age_verified', '1'); window.dispatchEvent(new Event('age:updated')); } catch (e) {}
                   onConfirm();
                 }}
               >

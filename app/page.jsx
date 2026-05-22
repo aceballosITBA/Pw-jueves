@@ -8,18 +8,21 @@ import MarketplaceHighlights from '../components/MarketplaceHighlights';
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
 
 export default function HomePage() {
-  const [isAgeVerified, setIsAgeVerified] = useState(false);
+  const [isAgeVerified, setIsAgeVerified] = useState(() => {
+    try {
+      return !!sessionStorage.getItem('age_verified');
+    } catch (e) {
+      return false;
+    }
+  });
   useEffect(() => {
-    const read = () => {
+    const onAge = () => {
       try {
-        const v = localStorage.getItem('age_verified');
-        setIsAgeVerified(!!v);
+        setIsAgeVerified(!!sessionStorage.getItem('age_verified'));
       } catch (e) {
         setIsAgeVerified(false);
       }
     };
-    read();
-    const onAge = () => read();
     window.addEventListener('age:updated', onAge);
     return () => window.removeEventListener('age:updated', onAge);
   }, []);
