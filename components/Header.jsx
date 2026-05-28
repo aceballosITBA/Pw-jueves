@@ -66,6 +66,14 @@ export default function Header() {
   };
   if (!ageVerified) return null;
 
+  if (pathname === '/login') {
+    return (
+      <header className="ml-header ml-header-login">
+        <Link href="/" className="ml-logo">Baum</Link>
+      </header>
+    );
+  }
+
   return (
     <header className="ml-header">
       <div className="ml-left">

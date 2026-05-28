@@ -8,12 +8,15 @@ export default function CheckoutAuthModal({ open, onClose, onAuthed }) {
     <div className="modal-overlay" role="dialog" aria-modal="true">
       <div className="modal-card card auth-modal">
         <AuthForm
-          title="Antes de continuar"
-          description="Iniciá sesión o creá una cuenta para seguir con el pago."
+          title="Ingresá para terminar tu compra"
+          description="Usá Google o tu email para continuar con el checkout sin perder el pedido."
           submitLabel="Continuar"
           onCancel={onClose}
           onSuccess={onAuthed}
           compact
+          showTabs={false}
+          showHeader={true}
+          showGoogleLogin={true}
         />
       </div>
     </div>

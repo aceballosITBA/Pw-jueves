@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function FloatingWhatsApp() {
   const [offset, setOffset] = useState(0);
   const [ageVerified, setAgeVerified] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => {
@@ -25,7 +27,7 @@ export default function FloatingWhatsApp() {
     return () => window.removeEventListener('age:updated', onAge);
   }, []);
 
-  if (!ageVerified) return null;
+  if (!ageVerified || pathname === '/login') return null;
 
   return (
     <a

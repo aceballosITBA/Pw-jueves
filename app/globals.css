@@ -57,6 +57,9 @@ main{display:grid;gap:2rem}
 .ml-user{font-weight:700;color:var(--text);text-decoration:none;padding:.25rem .5rem;border-radius:6px}
 .ml-cart{position:relative;display:inline-flex;align-items:center;gap:.4rem;color:var(--text);text-decoration:none}
 .ml-cart-badge{position:absolute;top:-8px;right:-8px;min-width:20px;height:20px;padding:0 .45rem;border-radius:999px;background:var(--gold);color:#fff;font-size:.75rem;font-weight:800;display:inline-grid;place-items:center}
+.ml-header-login{justify-content:flex-start;padding:.6rem 1rem;height:64px;background:rgba(255,255,255,.96);box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.ml-header-login .ml-logo{font-size:1.65rem;color:var(--gold);line-height:1;letter-spacing:-.03em}
+
 
 /* Increase top padding so page content isn't hidden under fixed ML header */
 .app-container{padding-top:84px}
@@ -162,7 +165,57 @@ main{display:grid;gap:2rem}
 .auth-form label{display:grid;gap:.35rem;font-weight:700}
 .auth-form input{padding:.75rem .8rem;border-radius:12px;border:1px solid rgba(78,61,38,.16);font:inherit}
 .auth-error{margin:0;color:#9a3412;font-weight:700}
-.auth-actions{margin-top:.2rem}
+.auth-actions{display:grid;grid-template-columns:1fr;gap:.7rem;margin-top:.2rem}
+.auth-actions > span{display:none}
+.auth-actions .btn{width:100%}
+
+.google-login{display:grid;gap:.65rem}
+.google-login-slot{display:grid;justify-items:stretch}
+.google-login-note{margin:0;color:var(--muted);font-size:.92rem;line-height:1.35}
+.google-login-fallback{width:100%;padding:.85rem 1rem;border-radius:999px;border:1px solid rgba(78,61,38,.16);background:#fff;color:var(--muted);font:inherit;font-weight:800;cursor:not-allowed}
+.google-login-missing{opacity:.95}
+.google-login .nsm7Bb-HzV7m-LgbsSe{min-width:100%!important;justify-content:center!important}
+
+.auth-marketplace-shell{display:grid;gap:1rem}
+.auth-marketplace-shell-minimal{min-height:calc(100vh - 84px);align-content:start;justify-items:start;padding-top:2.4rem}
+.auth-marketplace-shell-grid{min-height:calc(100vh - 84px);display:grid;grid-template-columns:minmax(0,1.95fr) minmax(320px,398px);gap:.12rem;align-items:start;padding-top:2.2rem;padding-left:2.45rem;padding-right:.8rem}
+.auth-marketplace-hero{display:flex;justify-content:space-between;gap:1rem;align-items:center}
+.auth-marketplace-hero-minimal{max-width:760px;width:100%}
+.auth-marketplace-copy-login{max-width:760px;padding:2.6rem 0 0 0;align-self:start}
+.auth-marketplace-copy-login h1{max-width:18ch;font-size:clamp(2.35rem,4.8vw,4.15rem);line-height:.94;margin:.15rem 0 0}
+.auth-marketplace-copy{max-width:52rem}
+.auth-marketplace-copy h1{margin:.2rem 0 .35rem;font-size:clamp(2rem,4vw,3.5rem);line-height:.95}
+.auth-marketplace-copy p{margin:0;color:var(--muted);line-height:1.45}
+.auth-marketplace-card,.auth-marketplace-side{min-height:100%}
+.auth-marketplace-card .auth-inline,.auth-marketplace-card .auth-shell{gap:.9rem}
+.auth-marketplace-card .auth-tabs{margin-top:.25rem}
+.auth-marketplace-card .auth-form{gap:.8rem}
+.auth-marketplace-card .btn.primary{justify-self:end}
+.auth-marketplace-single{max-width:392px;width:100%;padding:1.1rem .95rem;border-radius:16px;justify-self:start;box-shadow:0 10px 28px rgba(0,0,0,.05);margin-top:1rem}
+.auth-session-card-compact{align-items:flex-start}
+.auth-session-card-compact h1{margin:.15rem 0 .25rem;font-size:clamp(1.8rem,4vw,2.8rem);line-height:1}
+.auth-email-summary{display:grid;gap:.2rem;padding:.85rem 1rem;border:1px solid rgba(78,61,38,.12);border-radius:16px;background:rgba(255,255,255,.68)}
+.auth-email-summary span{font-size:.82rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.auth-email-summary strong{font-size:1rem;color:var(--text);word-break:break-word}
+.auth-change-email{justify-self:start;border:0;background:transparent;color:var(--gold);padding:0;font:inherit;font-weight:800;cursor:pointer}
+.auth-marketplace-single{max-width:392px;margin:1rem 0 0;padding:1.1rem .95rem}
+.auth-marketplace-single .auth-shell,.auth-marketplace-single .auth-inline{gap:.9rem}
+.auth-marketplace-single .auth-header{display:grid;gap:.35rem;margin-bottom:.25rem}
+.auth-marketplace-single .auth-header h2{font-size:1.18rem;line-height:1.05}
+.auth-marketplace-single .auth-header p{font-size:.95rem}
+.auth-marketplace-single .auth-form{gap:.8rem}
+.auth-marketplace-single .auth-form input{height:45px;border-radius:8px}
+.auth-marketplace-single .auth-actions{display:grid;gap:.6rem;margin-top:.15rem}
+.auth-marketplace-single .auth-actions .btn{width:100%;height:45px;border-radius:8px;font-size:1.02rem}
+.auth-marketplace-single .auth-google-bottom{margin-top:1rem}
+.auth-marketplace-single .google-login-slot{width:100%}
+.auth-marketplace-single .google-login-real{display:flex;align-items:center;justify-content:center;gap:.65rem;width:100%;height:45px;padding:0 1rem;border:1px solid rgba(78,61,38,.18);border-radius:8px;background:#fff;color:var(--text);font:inherit;font-weight:700;cursor:pointer}
+.auth-marketplace-single .google-login-mark{width:18px;height:18px;display:block;flex:0 0 auto}
+.auth-marketplace-single .google-login .nsm7Bb-HzV7m-LgbsSe{min-width:100%!important;height:44px!important;border-radius:8px!important}
+.auth-google-bottom{display:grid;gap:.7rem;margin-top:1rem}
+.auth-google-separator{display:flex;align-items:center;gap:.8rem;color:var(--muted);font-weight:700;text-transform:lowercase}
+.auth-google-separator::before,.auth-google-separator::after{content:'';height:1px;flex:1;background:rgba(78,61,38,.14)}
+.auth-google-separator span{padding:0 .4rem}
 
 .auth-page{padding-top:96px}
 .auth-hero{display:flex;justify-content:space-between;gap:1rem;align-items:flex-end;margin-bottom:1rem}
@@ -372,6 +425,14 @@ main{display:grid;gap:2rem}
 	.filter-grid{grid-template-columns:1fr}
 	.auth-tabs{flex-direction:column}
 	.auth-tab{width:100%}
+	.auth-marketplace-hero{align-items:flex-start;flex-direction:column}
+	.auth-marketplace-copy h1{font-size:clamp(1.7rem,7vw,2.4rem)}
+	.auth-marketplace-card .btn.primary{justify-self:stretch;width:100%}
+	.auth-marketplace-shell-grid{grid-template-columns:1fr;padding-top:1rem}
+	.auth-marketplace-copy-login{padding:0}
+	.auth-marketplace-single{max-width:none;margin:1rem 0 0;padding:1rem}
+	.auth-marketplace-single .auth-header h2{font-size:1.35rem}
+	.auth-actions{gap:.6rem}
 	.modal-actions{flex-direction:column;align-items:stretch}
 	.modal-buttons{width:100%;flex-direction:column}
 	.modal-buttons .btn{width:100%}
