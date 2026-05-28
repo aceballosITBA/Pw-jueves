@@ -1,7 +1,4 @@
 {
   "/page": "app/page.js",
-  "/cart/page": "app/cart/page.js",
-  "/mi-cuenta/page": "app/mi-cuenta/page.js",
-  "/checkout/page": "app/checkout/page.js",
-  "/latas/page": "app/latas/page.js"
+  "/login/page": "app/login/page.js"
 }

@@ -12,6 +12,7 @@ export default function Header() {
   const [cartCount, setCartCount] = useState(0);
   const [searchValue, setSearchValue] = useState(() => searchParams.get('search') || '');
   const [authUser, setAuthUser] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const read = () => {
@@ -54,6 +55,10 @@ export default function Header() {
     setSearchValue(searchParams.get('search') || '');
   }, [searchParams]);
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
   const goToSearch = (nextValue) => {
     const term = nextValue.trim();
     const nextUrl = term ? `/latas?search=${encodeURIComponent(term)}` : '/latas';
@@ -87,15 +92,27 @@ export default function Header() {
       </form>
 
       <div className="ml-right">
-        <nav className="ml-nav" aria-label="Navegación principal">
-          <Link href="/latas" className="ml-nav-link">Latas</Link>
-          <Link href="/historia" className="ml-nav-link">Historia</Link>
+        <div className="ml-menu-row">
+          <button
+            type="button"
+            className="ml-menu-toggle"
+            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+            aria-expanded={menuOpen}
+            aria-controls="main-nav"
+            onClick={() => setMenuOpen((current) => !current)}
+          >
+            <span aria-hidden="true">{menuOpen ? '✕' : '☰'}</span>
+          </button>
+        </div>
+        <nav id="main-nav" className={`ml-nav ${menuOpen ? 'open' : ''}`} aria-label="Navegación principal">
+          <Link href="/latas" className="ml-nav-link" onClick={() => setMenuOpen(false)}>Latas</Link>
+          <Link href="/historia" className="ml-nav-link" onClick={() => setMenuOpen(false)}>Historia</Link>
           {authUser ? (
-            <Link href="/mi-cuenta" className="ml-user">Hola, {authUser.name}</Link>
+            <Link href="/mi-cuenta" className="ml-user" onClick={() => setMenuOpen(false)}>Hola, {authUser.name}</Link>
           ) : (
-            <Link href="/login" className="ml-user">Ingresar</Link>
+            <Link href="/login" className="ml-user" onClick={() => setMenuOpen(false)}>Ingresar</Link>
           )}
-          <Link href="/cart" className="ml-cart" aria-label="Carrito">
+          <Link href="/cart" className="ml-cart" aria-label="Carrito" onClick={() => setMenuOpen(false)}>
             <span className="ml-cart-icon">🛒</span>
             {cartCount > 0 ? <span className="ml-cart-badge" aria-live="polite">{cartCount}</span> : null}
           </Link>
