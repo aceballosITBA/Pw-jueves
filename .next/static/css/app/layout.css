@@ -60,8 +60,8 @@ main{display:grid;grid-gap:2rem;gap:2rem}
 .ml-user{font-weight:700;color:var(--text);text-decoration:none;padding:.25rem .5rem;border-radius:6px}
 .ml-cart{position:relative;display:inline-flex;align-items:center;gap:.4rem;color:var(--text);text-decoration:none}
 .ml-cart-badge{position:absolute;top:-8px;right:-8px;min-width:20px;height:20px;padding:0 .45rem;border-radius:999px;background:var(--gold);color:#fff;font-size:.75rem;font-weight:800;display:inline-grid;place-items:center}
-.ml-header-login{justify-content:flex-start;padding:.6rem 1rem;height:64px;background:rgba(255,255,255,.96);box-shadow:0 2px 6px rgba(0,0,0,.06)}
-.ml-header-login .ml-logo{font-size:1.65rem;color:var(--gold);line-height:1;letter-spacing:-.03em}
+.ml-header-login{justify-content:flex-start;padding:.45rem 1rem;height:58px;background:rgba(255,255,255,.94);box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.ml-header-login .ml-logo{font-size:1.52rem;color:var(--gold);line-height:1;letter-spacing:-.03em}
 
 
 /* Increase top padding so page content isn't hidden under fixed ML header */
@@ -181,7 +181,7 @@ main{display:grid;grid-gap:2rem;gap:2rem}
 
 .auth-marketplace-shell{display:grid;grid-gap:1rem;gap:1rem}
 .auth-marketplace-shell-minimal{min-height:calc(100vh - 84px);align-content:start;justify-items:start;padding-top:2.4rem}
-.auth-marketplace-shell-grid{min-height:calc(100vh - 84px);display:grid;grid-template-columns:minmax(0,1.95fr) minmax(320px,398px);grid-gap:.12rem;gap:.12rem;align-items:start;padding-top:2.2rem;padding-left:2.45rem;padding-right:.8rem}
+.auth-marketplace-shell-grid{min-height:calc(100vh - 84px);display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,398px);grid-gap:clamp(1.5rem,3vw,2.8rem);gap:clamp(1.5rem,3vw,2.8rem);align-items:start;max-width:1180px;width:100%;margin:0 auto;padding:2.2rem 1.2rem 0}
 .auth-marketplace-hero{display:flex;justify-content:space-between;gap:1rem;align-items:center}
 .auth-marketplace-hero-minimal{max-width:760px;width:100%}
 .auth-marketplace-copy-login{max-width:760px;padding:2.6rem 0 0 0;align-self:start}
@@ -216,9 +216,9 @@ main{display:grid;grid-gap:2rem;gap:2rem}
 .auth-marketplace-single .google-login-mark{width:18px;height:18px;display:block;flex:0 0 auto}
 .auth-marketplace-single .google-login .nsm7Bb-HzV7m-LgbsSe{min-width:100%!important;height:44px!important;border-radius:8px!important}
 .auth-google-bottom{display:grid;grid-gap:.7rem;gap:.7rem;margin-top:1rem}
-.auth-google-separator{display:flex;align-items:center;gap:.8rem;color:var(--muted);font-weight:700;text-transform:lowercase}
+.auth-google-separator{display:flex;align-items:center;gap:.8rem;color:var(--muted);font-weight:700;text-transform:lowercase;font-family:'Arial',sans-serif}
 .auth-google-separator::before,.auth-google-separator::after{content:'';height:1px;flex:1 1;background:rgba(78,61,38,.14)}
-.auth-google-separator span{padding:0 .4rem}
+.auth-google-separator span{padding:0 .4rem;font-size:.95rem;line-height:1;font-family:'Arial',sans-serif}
 
 .auth-page{padding-top:96px}
 .auth-hero{display:flex;justify-content:space-between;gap:1rem;align-items:flex-end;margin-bottom:1rem}
@@ -334,7 +334,10 @@ main{display:grid;grid-gap:2rem;gap:2rem}
 
 @media (max-width:760px){
 	.app-container{padding:.8rem;padding-top:138px}
+	.auth-page{padding-top:78px}
 	.ml-header{height:auto;min-height:64px;padding:.65rem .8rem .75rem;gap:.5rem;align-items:flex-start}
+	.ml-header-login{height:52px;padding:.38rem .8rem;align-items:center}
+	.ml-header-login .ml-logo{font-size:1.34rem}
 	.ml-left{width:100%;justify-content:space-between;align-items:center}
 	.ml-logo{font-size:1.35rem}
 	.ml-location{display:none}
@@ -375,6 +378,17 @@ main{display:grid;grid-gap:2rem;gap:2rem}
 	.intro-stats article{padding:.8rem}
 	.checkout-form-grid,.checkout-payment-options{gap:.65rem}
 	.checkout-payment-card{padding:.8rem}
+	.auth-marketplace-shell-grid{grid-template-columns:1fr;gap:1rem;max-width:560px;padding:1rem .85rem 0}
+	.auth-marketplace-copy-login{padding:0}
+	.auth-marketplace-copy-login h1{max-width:12ch;font-size:clamp(1.9rem,7.8vw,2.55rem);line-height:.98}
+	.auth-marketplace-single{max-width:none;width:100%;margin:.25rem 0 0;padding:.95rem}
+	.auth-marketplace-single .auth-header{margin-bottom:.15rem}
+	.auth-marketplace-single .auth-header h2{font-size:1.22rem}
+	.auth-marketplace-single .auth-header p{font-size:.92rem}
+	.auth-marketplace-single .auth-form input,
+	.auth-marketplace-single .auth-actions .btn,
+	.auth-marketplace-single .google-login-real,
+	.auth-marketplace-single .google-login .nsm7Bb-HzV7m-LgbsSe{height:42px!important}
 	.modal-overlay{padding:.7rem}
 	.modal-card{border-radius:18px;padding:1rem}
 	.undo-toast{left:12px;right:12px;transform:none;bottom:14px;border-radius:18px;justify-content:space-between}
@@ -388,7 +402,10 @@ main{display:grid;grid-gap:2rem;gap:2rem}
 
 @media (max-width:420px){
 	.app-container{padding:.7rem;padding-top:128px}
+	.auth-page{padding-top:72px}
 	.ml-header{padding:.55rem .7rem .65rem}
+	.ml-header-login{height:48px;padding:.35rem .7rem}
+	.ml-header-login .ml-logo{font-size:1.22rem}
 	.ml-logo{font-size:1.2rem}
 	.ml-menu-toggle{width:38px;height:38px;border-radius:11px}
 	.ml-search-input,.ml-search-btn{height:38px}
@@ -433,6 +450,7 @@ main{display:grid;grid-gap:2rem;gap:2rem}
 	.auth-marketplace-card .btn.primary{justify-self:stretch;width:100%}
 	.auth-marketplace-shell-grid{grid-template-columns:1fr;padding-top:1rem}
 	.auth-marketplace-copy-login{padding:0}
+	.auth-marketplace-copy-login h1{font-size:clamp(1.65rem,8vw,2.1rem)}
 	.auth-marketplace-single{max-width:none;margin:1rem 0 0;padding:1rem}
 	.auth-marketplace-single .auth-header h2{font-size:1.35rem}
 	.auth-actions{gap:.6rem}
