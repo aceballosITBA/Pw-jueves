@@ -1,0 +1,19 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/api/orders/route": "/api/orders",
+  "/api/products/[id]/route": "/api/products/[id]",
+  "/api/orders/[orderId]/route": "/api/orders/[orderId]",
+  "/api/products/route": "/api/products",
+  "/api/webhooks/mercadopago/route": "/api/webhooks/mercadopago",
+  "/cart/page": "/cart",
+  "/admin/page": "/admin",
+  "/checkout/page": "/checkout",
+  "/historia/page": "/historia",
+  "/latas/page": "/latas",
+  "/login/page": "/login",
+  "/mi-cuenta/order/[orderId]/page": "/mi-cuenta/order/[orderId]",
+  "/mi-cuenta/page": "/mi-cuenta",
+  "/page": "/",
+  "/ofertas/page": "/ofertas",
+  "/productos/page": "/productos"
+}

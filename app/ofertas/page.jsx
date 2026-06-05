@@ -6,7 +6,7 @@ import Footer from '../../components/Footer';
 export default function OfertasPage() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    fetch('/data/products.json').then((r) => r.json()).then(setProducts).catch(() => setProducts([]));
+    fetch('/api/products').then((r) => r.json()).then((data) => setProducts(data.products || [])).catch(() => setProducts([]));
   }, []);
 
   // Regla simple para ofertas: precio pack6 <= 11000 ARS (se puede cambiar)

@@ -2,6 +2,7 @@ const AUTH_USER_KEY = 'auth_user';
 const AUTH_SESSION_KEY = 'auth_session';
 const AUTH_LAST_LOGIN_KEY = 'auth_last_login';
 const AUTH_PROVIDER_KEY = 'auth_provider';
+const SUPABASE_ACCESS_TOKEN_KEY = 'supabase_access_token';
 
 const safeParse = (value) => {
   try {
@@ -42,12 +43,30 @@ export function persistAuth(user) {
   return user;
 }
 
+export function persistAuthWithToken(user, accessToken) {
+  try {
+    persistAuth(user);
+    if (accessToken) localStorage.setItem(SUPABASE_ACCESS_TOKEN_KEY, accessToken);
+    else localStorage.removeItem(SUPABASE_ACCESS_TOKEN_KEY);
+  } catch (e) {}
+  return user;
+}
+
+export function readAuthToken() {
+  try {
+    return localStorage.getItem(SUPABASE_ACCESS_TOKEN_KEY) || null;
+  } catch (e) {
+    return null;
+  }
+}
+
 export function clearAuth() {
   try {
     localStorage.removeItem(AUTH_USER_KEY);
     localStorage.removeItem(AUTH_SESSION_KEY);
     localStorage.removeItem(AUTH_LAST_LOGIN_KEY);
     localStorage.removeItem(AUTH_PROVIDER_KEY);
+    localStorage.removeItem(SUPABASE_ACCESS_TOKEN_KEY);
     window.dispatchEvent(new Event('auth:updated'));
   } catch (e) {
     // ignore
@@ -64,4 +83,24 @@ export function decodeGoogleCredential(credential) {
   } catch (e) {
     return null;
   }
+}
+
+export function buildAuthUserFromSupabaseUser(user) {
+  if (!user) return null;
+
+  const nameFromMetadata = user.user_metadata?.name || user.user_metadata?.full_name || user.user_metadata?.fullName || '';
+
+  return {
+    id: user.id,
+    name: nameFromMetadata || user.email?.split('@')[0] || 'Usuario',
+    email: user.email || '',
+    picture: user.user_metadata?.avatar_url || user.user_metadata?.picture || '',
+    provider: user.app_metadata?.provider || user.identities?.[0]?.provider || 'supabase'
+  };
+}
+
+export function persistSupabaseAuth(user) {
+  const mappedUser = buildAuthUserFromSupabaseUser(user);
+  if (!mappedUser) return null;
+  return persistAuth(mappedUser);
 }

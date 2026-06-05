@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Footer from '../../components/Footer';
 import AuthForm from '../../components/AuthForm';
-import { readAuthUser, isAuthed } from '../../components/auth-utils';
+import { readAuthUser } from '../../components/auth-utils';
+import { supabase } from '../../lib/supabase/client';
 
 const formatCurrency = (value) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(value || 0);
 
@@ -24,6 +25,37 @@ export default function CheckoutPage() {
   const [completedOrder, setCompletedOrder] = useState(null);
 
   useEffect(() => {
+    let cancelled = false;
+
+    const syncSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (cancelled) return;
+
+      const sessionUser = data?.session?.user || null;
+      if (sessionUser) {
+        setUser({
+          id: sessionUser.id,
+          name: sessionUser.user_metadata?.name || sessionUser.email?.split('@')[0] || 'Usuario',
+          email: sessionUser.email || ''
+        });
+      }
+    };
+
+    syncSession();
+
+    const { data: authSubscription } = supabase.auth.onAuthStateChange((_event, session) => {
+      const sessionUser = session?.user || null;
+      if (sessionUser) {
+        setUser({
+          id: sessionUser.id,
+          name: sessionUser.user_metadata?.name || sessionUser.email?.split('@')[0] || 'Usuario',
+          email: sessionUser.email || ''
+        });
+      } else {
+        setUser(null);
+      }
+    });
+
     try {
       const rawOrder = localStorage.getItem('pending_checkout');
       const rawCart = localStorage.getItem('cart_items');
@@ -43,6 +75,11 @@ export default function CheckoutPage() {
       setUser(null);
     }
     setAuthReady(true);
+
+    return () => {
+      cancelled = true;
+      authSubscription.subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
@@ -58,30 +95,48 @@ export default function CheckoutPage() {
   const shippingCost = subtotal > 20000 ? 0 : subtotal > 0 ? 1800 : 0;
   const total = subtotal + shippingCost;
 
-  const handleCompleteCheckout = () => {
+  const handleCompleteCheckout = async () => {
     if (!pendingOrder || !user) return;
     try {
-      const raw = localStorage.getItem('orders');
-      const orders = raw ? JSON.parse(raw) : [];
+      const { data } = await supabase.auth.getSession();
+      const accessToken = data?.session?.access_token;
+
+      if (!accessToken) {
+        setCompletedOrder(null);
+        return;
+      }
+
       const order = {
         ...pendingOrder,
         id: pendingOrder.id || String(Date.now()),
-        user,
+        userId: user.id,
         shipping,
         paymentMethod,
         status: 'ready_to_pay',
         createdAt: Date.now(),
         total
       };
-      orders.unshift(order);
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify(order)
+      });
+
+      if (!response.ok) throw new Error('API error');
+      const dataOrder = await response.json();
+      const createdOrder = dataOrder.order || order;
+
+      const raw = localStorage.getItem('orders');
+      const orders = raw ? JSON.parse(raw) : [];
+      orders.unshift(createdOrder);
       localStorage.setItem('orders', JSON.stringify(orders));
-      localStorage.setItem('last_order', JSON.stringify(order));
+      localStorage.setItem('last_order', JSON.stringify(createdOrder));
       localStorage.removeItem('pending_checkout');
       localStorage.removeItem('cart_items');
-      localStorage.setItem('last_checkout_order', JSON.stringify(order));
+      localStorage.setItem('last_checkout_order', JSON.stringify(createdOrder));
       try { window.dispatchEvent(new Event('orders:updated')); } catch (e) {}
       try { window.dispatchEvent(new Event('cart:updated')); } catch (e) {}
-      setCompletedOrder(order);
+      setCompletedOrder(createdOrder);
     } catch (e) {
       setCompletedOrder(null);
     }

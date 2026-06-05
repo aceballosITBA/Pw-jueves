@@ -1,5 +1,19 @@
 {
-  "/page": "app/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/orders/route": "app/api/orders/route.js",
+  "/api/products/[id]/route": "app/api/products/[id]/route.js",
+  "/api/orders/[orderId]/route": "app/api/orders/[orderId]/route.js",
+  "/api/products/route": "app/api/products/route.js",
+  "/api/webhooks/mercadopago/route": "app/api/webhooks/mercadopago/route.js",
+  "/cart/page": "app/cart/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/checkout/page": "app/checkout/page.js",
+  "/historia/page": "app/historia/page.js",
+  "/latas/page": "app/latas/page.js",
   "/login/page": "app/login/page.js",
-  "/historia/page": "app/historia/page.js"
+  "/mi-cuenta/order/[orderId]/page": "app/mi-cuenta/order/[orderId]/page.js",
+  "/mi-cuenta/page": "app/mi-cuenta/page.js",
+  "/page": "app/page.js",
+  "/ofertas/page": "app/ofertas/page.js",
+  "/productos/page": "app/productos/page.js"
 }

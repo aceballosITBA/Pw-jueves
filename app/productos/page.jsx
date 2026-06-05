@@ -35,9 +35,9 @@ export default function ProductosPage() {
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    fetch('/data/products.json').then((response) => response.json()).then((data) => {
-      setProducts(data);
-      if (data.length) setSelectedProduct(data[0]);
+    fetch('/api/products').then((response) => response.json()).then((data) => {
+      setProducts(data.products || []);
+      if ((data.products || []).length) setSelectedProduct(data.products[0]);
     });
   }, []);
 

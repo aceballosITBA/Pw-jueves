@@ -2,14 +2,23 @@
   "name": "pw-jueves",
   "private": true,
   "version": "0.0.0",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "migrate:orders": "node scripts/migrate-orders-to-supabase.js",
+    "test:rls": "node scripts/test-rls.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.107.0",
+    "dotenv": "^16.6.1",
     "next": "^15.3.2",
+    "pg": "^8.21.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "ws": "^8.21.0"
   }
 }

@@ -29,7 +29,7 @@ export default function HomePage() {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [cartHydrated, setCartHydrated] = useState(false);
-  useEffect(() => { fetch('/data/products.json').then((r) => r.json()).then(setProducts); }, []);
+  useEffect(() => { fetch('/api/products').then((r) => r.json()).then((data) => setProducts(data.products || [])); }, []);
   useEffect(() => {
     try {
       const raw = localStorage.getItem('cart_items');

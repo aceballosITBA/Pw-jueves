@@ -1,20 +1,48 @@
 "use client";
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { readAuthUser } from './auth-utils';
+import { supabase } from '../lib/supabase/client';
+import { persistSupabaseAuth, clearAuth } from './auth-utils';
 
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [ageVerified, setAgeVerified] = useState(false);
   const [cartCount, setCartCount] = useState(0);
-  const [searchValue, setSearchValue] = useState(() => searchParams.get('search') || '');
+  const [searchValue, setSearchValue] = useState('');
   const [authUser, setAuthUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
+
+    const syncSupabaseSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      const sessionUser = data?.session?.user || null;
+
+      if (cancelled) return;
+
+      if (sessionUser) {
+        setAuthUser(persistSupabaseAuth(sessionUser));
+      } else {
+        setAuthUser(readAuthUser());
+      }
+    };
+
+    syncSupabaseSession();
+
+    const { data: authSubscription } = supabase.auth.onAuthStateChange((_event, session) => {
+      const sessionUser = session?.user || null;
+      if (sessionUser) {
+        setAuthUser(persistSupabaseAuth(sessionUser));
+      } else {
+        clearAuth();
+        setAuthUser(null);
+      }
+    });
+
     const read = () => {
       try {
         const raw = localStorage.getItem('cart_items');
@@ -44,16 +72,23 @@ export default function Header() {
     window.addEventListener('age:updated', onAge);
     window.addEventListener('auth:updated', onAuth);
     return () => {
+      cancelled = true;
       window.removeEventListener('storage', onStorage);
       window.removeEventListener('cart:updated', onStorage);
       window.removeEventListener('age:updated', onAge);
       window.removeEventListener('auth:updated', onAuth);
+      authSubscription.subscription.unsubscribe();
     };
   }, []);
 
   useEffect(() => {
-    setSearchValue(searchParams.get('search') || '');
-  }, [searchParams]);
+    try {
+      const params = new URLSearchParams(window.location.search);
+      setSearchValue(params.get('search') || '');
+    } catch (e) {
+      setSearchValue('');
+    }
+  }, [pathname]);
 
   useEffect(() => {
     setMenuOpen(false);

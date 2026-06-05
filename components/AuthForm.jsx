@@ -1,6 +1,8 @@
 "use client";
 import { useState } from 'react';
-import { persistAuth } from './auth-utils';
+import { useRouter } from 'next/navigation';
+import { supabase } from '../lib/supabase/client';
+import { persistSupabaseAuth } from './auth-utils';
 import GoogleLoginButton from './GoogleLoginButton';
 
 export default function AuthForm({
@@ -16,14 +18,16 @@ export default function AuthForm({
   showHeader = true,
   googlePlacement = 'bottom'
 }) {
+  const router = useRouter();
   const [mode, setMode] = useState(defaultMode);
   const [step, setStep] = useState('email');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const cleanEmail = email.trim().toLowerCase();
     const cleanPassword = password.trim();
@@ -49,14 +53,34 @@ export default function AuthForm({
       return;
     }
 
-    const user = {
-      name: cleanName || cleanEmail.split('@')[0] || 'Usuario',
-      email: cleanEmail
-    };
-
-    persistAuth(user);
+    setLoading(true);
     setError('');
-    onSuccess?.(user);
+
+    try {
+      const authResult = mode === 'create'
+        ? await supabase.auth.signUp({
+          email: cleanEmail,
+          password: cleanPassword,
+          options: { data: { name: cleanName } }
+        })
+        : await supabase.auth.signInWithPassword({
+          email: cleanEmail,
+          password: cleanPassword
+        });
+
+      const sessionUser = authResult.data?.user;
+      if (!sessionUser) {
+        setError(mode === 'create' ? 'Revisá tu correo para confirmar la cuenta.' : 'No pudimos iniciar sesión.');
+        return;
+      }
+
+      const mappedUser = persistSupabaseAuth(sessionUser);
+      onSuccess?.(mappedUser);
+    } catch (authError) {
+      setError(authError?.message || 'No pudimos iniciar sesión.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -93,7 +117,7 @@ export default function AuthForm({
 
         <div className="modal-actions auth-actions">
           {onCancel ? <button type="button" className="btn ghost" onClick={onCancel}>Cancelar</button> : <span />}
-          <button type="submit" className="btn primary">{step === 'email' ? 'Continuar' : submitLabel}</button>
+          <button type="submit" className="btn primary" disabled={loading}>{step === 'email' ? 'Continuar' : submitLabel}</button>
         </div>
       </form>
 

@@ -8,7 +8,7 @@ const calcPrice = (base, pack) => {
 };
 const formatCurrency = (v) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(v);
 
-export default function ProductCard({ product, onSelect, onAddToCart }) {
+export default function ProductCard({ product, onSelect }) {
   const [imageError, setImageError] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
@@ -55,7 +55,6 @@ export default function ProductCard({ product, onSelect, onAddToCart }) {
           <p className="pack-discount-note" aria-live="polite">
             {activePack === 12 ? 'Se adquiere un 10% de descuento.' : activePack === 24 ? 'Se adquiere un 20% de descuento.' : ' '}
           </p>
-          {onAddToCart ? <button type="button" className="card-add-button" onClick={(event) => { event.stopPropagation(); onAddToCart(product, activePack); }}>Agregar al carrito</button> : null}
         </div>
       </div>
     </article>

@@ -1,23 +1,30 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Footer from '../../components/Footer';
-import { clearAuth, readAuthUser, isAuthed } from '../../components/auth-utils';
+import { clearAuth, readAuthUser } from '../../components/auth-utils';
+import { supabase } from '../../lib/supabase/client';
+
+const formatCurrency = (value) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(value || 0);
+
+const readLocalOrders = () => {
+  try {
+    const raw = localStorage.getItem('orders');
+    return raw ? JSON.parse(raw) : [];
+  } catch (error) {
+    return [];
+  }
+};
 
 export default function MiCuentaPage() {
   const [orders, setOrders] = useState([]);
   const [user, setUser] = useState(null);
+  const [loadingOrders, setLoadingOrders] = useState(false);
+  const [ordersError, setOrdersError] = useState('');
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem('orders');
-      if (raw) setOrders(JSON.parse(raw));
-    } catch (e) {
-      setOrders([]);
-    }
-    const onOrders = () => {
-      try { const raw = localStorage.getItem('orders'); if (raw) setOrders(JSON.parse(raw)); else setOrders([]); } catch (e) { setOrders([]); }
-    };
+    setOrders(readLocalOrders());
+    const onOrders = () => setOrders(readLocalOrders());
     window.addEventListener('orders:updated', onOrders);
     return () => window.removeEventListener('orders:updated', onOrders);
   }, []);
@@ -33,10 +40,47 @@ export default function MiCuentaPage() {
     return () => window.removeEventListener('auth:updated', onAuth);
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadOrders = async () => {
+      const { data } = await supabase.auth.getSession();
+      const accessToken = data?.session?.access_token;
+
+      if (!accessToken) {
+        setLoadingOrders(false);
+        setOrders(readLocalOrders());
+        return;
+      }
+
+      setLoadingOrders(true);
+      setOrdersError('');
+
+      try {
+        const response = await fetch('/api/orders', { cache: 'no-store', headers: { Authorization: `Bearer ${accessToken}` } });
+        if (!response.ok) throw new Error('API error');
+        const data = await response.json();
+        if (!cancelled) setOrders(Array.isArray(data.orders) ? data.orders : []);
+      } catch (error) {
+        if (!cancelled) {
+          setOrdersError('No pudimos cargar los pedidos desde la API. Mostrando el historial local.');
+          setOrders(readLocalOrders());
+        }
+      } finally {
+        if (!cancelled) setLoadingOrders(false);
+      }
+    };
+
+    loadOrders();
+    return () => { cancelled = true; };
+  }, [user]);
+
   const handleLogout = () => {
     clearAuth();
     setUser(null);
   };
+
+  const hasOrders = useMemo(() => orders.length > 0, [orders]);
 
   return (
     <div className="app-container">
@@ -73,10 +117,14 @@ export default function MiCuentaPage() {
 
             <div className="card">
               <h3>Pedidos recientes</h3>
-              {!orders.length ? (
+              {loadingOrders ? (
+                <p>Cargando pedidos...</p>
+              ) : !hasOrders ? (
                 <p>No hay pedidos confirmados todavía.</p>
               ) : (
-                <ul className="account-order-list">
+                <>
+                  {ordersError ? <p>{ordersError}</p> : null}
+                  <ul className="account-order-list">
                   {orders.map((order) => (
                     <li key={order.id}>
                       <div>
@@ -84,12 +132,13 @@ export default function MiCuentaPage() {
                         <span>{new Date(order.date || order.createdAt || Date.now()).toLocaleString()}</span>
                       </div>
                       <div>
-                        <strong>{new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(order.total || 0)}</strong>
+                        <strong>{formatCurrency(order.total || 0)}</strong>
                         <Link href={`/mi-cuenta/order/${order.id}`}>Ver detalle</Link>
                       </div>
                     </li>
                   ))}
-                </ul>
+                  </ul>
+                </>
               )}
             </div>
           </div>
