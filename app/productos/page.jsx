@@ -36,8 +36,9 @@ export default function ProductosPage() {
 
   useEffect(() => {
     fetch('/api/products').then((response) => response.json()).then((data) => {
-      setProducts(data.products || []);
-      if ((data.products || []).length) setSelectedProduct(data.products[0]);
+      const products = data.data?.products || [];
+      setProducts(products);
+      if (products.length) setSelectedProduct(products[0]);
     });
   }, []);
 
@@ -60,7 +61,21 @@ export default function ProductosPage() {
     setSelectedPack(6);
   };
 
-  const addToCart = (product, pack = selectedPack) => {
+  const addToCart = async (product, pack = selectedPack) => {
+    try {
+      const res = await fetch('/api/carrito', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ product_id: product.id, cantidad: 1, pack }),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        alert(err.error || 'No se pudo agregar al carrito.');
+        return;
+      }
+    } catch {
+      // Si la API no responde, igual permite agregar
+    }
     setCartItems((currentItems) => {
       const existingItem = currentItems.find((item) => item.product.id === product.id && item.pack === pack);
       if (existingItem) {

@@ -124,7 +124,7 @@ export default function CheckoutPage() {
 
       if (!response.ok) throw new Error('API error');
       const dataOrder = await response.json();
-      const createdOrder = dataOrder.order || order;
+      const createdOrder = dataOrder.data?.order || order;
 
       const raw = localStorage.getItem('orders');
       const orders = raw ? JSON.parse(raw) : [];

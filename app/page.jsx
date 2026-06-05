@@ -29,7 +29,7 @@ export default function HomePage() {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [cartHydrated, setCartHydrated] = useState(false);
-  useEffect(() => { fetch('/api/products').then((r) => r.json()).then((data) => setProducts(data.products || [])); }, []);
+  useEffect(() => { fetch('/api/products').then((r) => r.json()).then((data) => setProducts(data.data?.products || [])); }, []);
   useEffect(() => {
     try {
       const raw = localStorage.getItem('cart_items');
@@ -50,7 +50,21 @@ export default function HomePage() {
     }
   }, [cartItems, cartHydrated]);
 
-  const handleAddToCart = (product, pack = 6) => {
+  const handleAddToCart = async (product, pack = 6) => {
+    try {
+      const res = await fetch('/api/carrito', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ product_id: product.id, cantidad: 1, pack }),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        alert(err.error || 'No se pudo agregar al carrito.');
+        return;
+      }
+    } catch {
+      // Si la API no responde, igual permite agregar
+    }
     setCartItems((current) => {
       const keyMatch = (it) => it.product.id === product.id && it.pack === pack;
       const existing = current.find(keyMatch);

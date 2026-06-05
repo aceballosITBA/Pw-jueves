@@ -21,7 +21,7 @@ export default function LatasBrowser() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch('/api/products').then((r) => r.json()).then((data) => setProducts(data.products || [])).catch(() => setProducts([]));
+    fetch('/api/products').then((r) => r.json()).then((data) => setProducts(data.data?.products || [])).catch(() => setProducts([]));
   }, []);
 
   useEffect(() => {
@@ -49,7 +49,21 @@ export default function LatasBrowser() {
     });
   }, [products, styleFilter, packFilter, minPrice, maxPrice, searchTerm]);
 
-  const handleAddToCart = (product, pack = 6) => {
+  const handleAddToCart = async (product, pack = 6) => {
+    try {
+      const res = await fetch('/api/carrito', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ product_id: product.id, cantidad: 1, pack }),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        alert(err.error || 'No se pudo agregar al carrito.');
+        return;
+      }
+    } catch {
+      // Si la API no responde, igual permite agregar
+    }
     try {
       const raw = localStorage.getItem('cart_items');
       const current = raw ? JSON.parse(raw) : [];

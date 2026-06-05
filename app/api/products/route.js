@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import { listProducts, saveProduct } from '../../../lib/data-store';
+import { successResponse, errorResponse } from '../../../lib/api-response';
 
 const hasAdminAccess = (request) => {
   const expectedToken = process.env.ADMIN_API_TOKEN;
@@ -10,26 +10,26 @@ const hasAdminAccess = (request) => {
 export async function GET() {
   try {
     const products = await listProducts();
-    return NextResponse.json({ products });
-  } catch (error) {
-    return NextResponse.json({ error: 'No se pudieron cargar los productos.' }, { status: 500 });
+    return successResponse({ products });
+  } catch {
+    return errorResponse('No se pudieron cargar los productos.', 500, 'SERVER_ERROR');
   }
 }
 
 export async function POST(request) {
   if (!hasAdminAccess(request)) {
-    return NextResponse.json({ error: 'No autorizado.' }, { status: 401 });
+    return errorResponse('No autorizado.', 401, 'UNAUTHORIZED');
   }
 
   try {
     const payload = await request.json();
     if (!payload?.id || !payload?.name || !payload?.style) {
-      return NextResponse.json({ error: 'Faltan campos obligatorios.' }, { status: 400 });
+      return errorResponse('Faltan campos obligatorios.', 400, 'MISSING_FIELDS');
     }
 
     const product = await saveProduct(payload);
-    return NextResponse.json({ product }, { status: 201 });
-  } catch (error) {
-    return NextResponse.json({ error: 'No se pudo crear el producto.' }, { status: 500 });
+    return successResponse({ product }, 201);
+  } catch {
+    return errorResponse('No se pudo crear el producto.', 500, 'SERVER_ERROR');
   }
 }

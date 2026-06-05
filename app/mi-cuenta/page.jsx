@@ -60,7 +60,7 @@ export default function MiCuentaPage() {
         const response = await fetch('/api/orders', { cache: 'no-store', headers: { Authorization: `Bearer ${accessToken}` } });
         if (!response.ok) throw new Error('API error');
         const data = await response.json();
-        if (!cancelled) setOrders(Array.isArray(data.orders) ? data.orders : []);
+        if (!cancelled) setOrders(Array.isArray(data.data?.orders) ? data.data.orders : []);
       } catch (error) {
         if (!cancelled) {
           setOrdersError('No pudimos cargar los pedidos desde la API. Mostrando el historial local.');

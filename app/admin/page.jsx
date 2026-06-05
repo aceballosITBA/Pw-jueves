@@ -36,7 +36,7 @@ export default function AdminPage() {
   const loadProducts = async () => {
     const response = await fetch('/api/products');
     const data = await response.json();
-    setProducts(data.products || []);
+    setProducts(data.data?.products || []);
   };
 
   useEffect(() => {
