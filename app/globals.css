@@ -29,7 +29,7 @@ main{display:grid;gap:2rem}
 .age-gate-card{position:relative;z-index:2;max-width:760px;text-align:center;padding:3rem;border-radius:28px;border:1px solid rgba(78,61,38,.16);background:rgba(255,252,247,.82);backdrop-filter:blur(8px)}
 .age-gate-tag{letter-spacing:.12em;text-transform:uppercase;color:#1d140d;font-size:4.3rem;line-height:.9;margin:0}.age-gate-card h1{font-size:2rem;margin:.6rem 0 .4rem}.age-gate-copy{font-size:1.05rem;color:#46392c;max-width:30rem;margin:0 auto 1.25rem;line-height:1.35}.age-gate-actions{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}.age-gate-button{padding:.95rem 1.35rem;border-radius:999px;border:0;background:linear-gradient(90deg,#ffbc57,#f3922a);font-weight:800;font-family:inherit;cursor:pointer}.age-gate-button.ghost{background:transparent;color:#1d140d;border:1px solid rgba(29,20,13,.35)}
 
-.hero-section{min-height:52vh;border-radius:28px;background:#f5f0e8;overflow:hidden;position:relative;box-shadow:0 20px 50px rgba(108,82,53,.14)}
+.hero-section{border-radius:28px;background:#f5f0e8;overflow:hidden;position:relative;box-shadow:0 20px 50px rgba(108,82,53,.14)}
 .hero-banner{position:relative;width:100%;height:min(52vh,600px);border-radius:28px;overflow:hidden;background:#0d0d0d}
 .hero-banner-image{width:100%;height:100%;display:block;object-fit:cover;object-position:center center}
 .hero-arrow{position:absolute;top:50%;transform:translateY(-50%);width:56px;height:56px;border-radius:999px;border:0;background:rgba(255,255,255,.92);color:#2d241b;font-size:2.2rem;font-weight:700;display:grid;place-items:center;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.18)}
@@ -84,13 +84,13 @@ main{display:grid;gap:2rem}
 
 @media (max-width:1400px){.product-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (max-width:1100px){.product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.featured-grid,.highlights-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.detail-main{grid-template-columns:1fr}.detail-media img{height:340px}.ecommerce-header{flex-wrap:wrap}.header-search-wrap{flex:1 1 280px;max-width:none}.header-actions{margin-left:auto}.header-nav{order:3;flex:1 1 100%;justify-content:center}}
-@media (max-width:760px){.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.featured-grid,.highlights-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-section{min-height:46vh;padding:1.4rem}.age-gate-card h1{font-size:2.1rem}.ecommerce-header{flex-wrap:wrap}.header-search-wrap{min-width:100%;max-width:none;order:2}.header-nav{order:3;width:100%;justify-content:flex-start}.header-actions{order:4;width:100%;justify-content:flex-start;margin-left:0}}
+@media (max-width:760px){.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.featured-grid,.highlights-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-section{padding:0}.hero-banner{height:220px!important}.age-gate-card h1{font-size:2.1rem}.ecommerce-header{flex-wrap:wrap}.header-search-wrap{min-width:100%;max-width:none;order:2}.header-nav{order:3;width:100%;justify-content:flex-start}.header-actions{order:4;width:100%;justify-content:flex-start;margin-left:0}}
 @media (max-width:480px){.product-grid{grid-template-columns:1fr}}
 
 /* Ajustes solicitados: sin marcos ni imágenes */
 .card,.product-detail-panel,.featured-card,.highlight-item,.thumb,.header-search,.header-nav a,.header-actions a{box-shadow:none!important}
 .brand-badge,.hero-price,.section-head{display:none!important}
-.hero-section{min-height:280px;box-shadow:none!important;border-radius:0!important}
+.hero-section{box-shadow:none!important;border-radius:16px!important}
 .ecommerce-footer{display:flex;flex-direction:column;gap:1rem;background:transparent;padding:1.5rem 0 1rem}
 .footer-top{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2rem;align-items:start}
 .footer-col{display:grid;gap:.9rem;align-content:start}
