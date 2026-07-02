@@ -23,8 +23,14 @@ export async function POST(request) {
     }
 
     // Fetchear el pago desde MP para obtener external_reference y estado real
-    const payment = new Payment(client);
-    const paymentData = await payment.get({ id: resourceId });
+    let paymentData;
+    try {
+      const payment = new Payment(client);
+      paymentData = await payment.get({ id: resourceId });
+    } catch {
+      // Pago no encontrado (ej: ID de prueba de la simulación) — responder 200 igual
+      return NextResponse.json({ ok: true, skipped: true, reason: 'Pago no encontrado en MP' });
+    }
 
     const externalRef = paymentData?.external_reference;
     const paymentStatus = paymentData?.status;
