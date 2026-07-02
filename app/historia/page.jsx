@@ -2,52 +2,45 @@ import Footer from '../../components/Footer';
 
 export default function HistoriaPage() {
   return (
-    <div className="app-container">
-      <main>
-        <section className="historia-hero card">
-          <h1 className="historia-title">NOS UNE UN MISMO ESPÍRITU</h1>
-          <div className="historia-body">
-            <div className="historia-claim">
-              <p>
-                NOS QUISIMOS AVENTURAR ALLÁ POR EL 2009 EN DESCUBRIR Y CONOCER LA ELABORACIÓN DE
-                UN PRODUCTO QUE NOS VENÍA CAUTIVANDO COMO CONSUMIDORES: LA CERVEZA ARTESANAL.
-                DECIDIMOS UTILIZAR LA PALABRA BAUM (ÁRBOL EN ALEMÁN), YA QUE REPRESENTA LA
-                PROTECCIÓN DE NUESTRA RAZA, EL EQUILIBRIO DE LA NATURALEZA, QUIEN NOS ENTREGA SUS
-                FRUTOS, NOS PROTEGE DEL SOL Y LA LLUVIA.{' '}
-                <strong>
-                  HOY, MÁS DE UNA DÉCADA DESPUÉS, Y CON MUCHOS ESTILOS REALIZADOS EN NUESTRO
-                  HABER, DECIDIMOS TRAER ESTE MATERIAL.
-                </strong>
-              </p>
-            </div>
-            <div className="historia-text">
-              <p>
-                Decidimos compartir a través de este catálogo, nuestras fichas técnicas: un material
-                que elaboramos específicamente para nuestras franquicias, y mediante el cual llevamos
-                a cabo la capacitación en cada estilo a través del cual llevamos a cabo la
-                capacitación. Para darle un valor agregado importante a todo nuestro personal a lo
-                largo del país nos capacitamos en cada estilo a través del cual llevamos la
-                capacitación en cada estilo.
-              </p>
-              <p>
-                Porcentaje de maltas de cada estilo, así como los momentos de adición de lúpulos
-                que forman parte de la receta. De este modo, aquellas almas curiosas no solo podrán
-                adentrarse en la estructura y anatomía de cada una de nuestras cervezas, sino
-                también en llevar a cabo el estilo a través de su propio equipamiento. Finalmente,
-                decidimos incluir otras características como: historia de cada estilo, categoría
-                BJCP, código QR hacia más material, gráficos araña, entre los aspectos más
-                destacados.
-              </p>
-              <p>
-                Esperamos que puedas disfrutar de este catálogo tanto como nosotros disfrutamos
-                de vivir de aquello que nos gusta, y que te animes a replicar esos estilos favoritos
-                que disfrutas de Baum.
-              </p>
-              <p className="historia-firma">El equipo de Baum.</p>
+    <div className="historia-page">
+      <div className="historia-banner">
+        <h1 className="historia-banner-title">QUIENES SOMOS</h1>
+      </div>
+
+      <div className="historia-content">
+        <section className="historia-section">
+          <h2 className="historia-section-title">HISTORIA</h2>
+          <div className="historia-section-body">
+            <p>Baum es una Cervecería Artesanal Marplatense que comenzó a elaborar su producción en 2009, momento en el que se visualizaba el auge por la Cerveza Artesanal tanto a nivel local como nacional a través de los primeros lugares abiertos con este tipo de propuesta.</p>
+            <p>El proyecto surge por aventurarse a descubrir y conocer la elaboración de un producto que me venía cautivando; la conexión con un Homebrewer terminó de darle forma a esta iniciativa-proyecto, y junto a él, fundamos Baum, (árbol en alemán), nombre de la Marca que sigue creciendo y posicionándose en el mercado artesanal con una calidad reconocida por los consumidores y público calificado.</p>
+            <p>En Baum nos inspiramos en estilos de diferentes partes del mundo. Diseñamos nuestras cervezas aplicando conocimiento y respetando la tradición en los procesos. Utilizamos los sentidos para evaluarlas y luego las compartimos con amigos, colegas y clientes.</p>
+            <p>Varias razones nos inspiran a producir cervezas: lo disfrutamos, nos divertimos, jugamos y gozamos compartirlas.</p>
+            <div className="historia-firma">
+              <strong>Leonardo Luffi</strong>
+              <span>Fundador</span>
             </div>
           </div>
         </section>
-      </main>
+
+        <div className="historia-divider" />
+
+        <section className="historia-section">
+          <h2 className="historia-section-title">MISION</h2>
+          <div className="historia-section-body">
+            <p>Nos esforzamos para que cada cerveza producida sea reflejo de dedicación, compromiso y orgullo diario de todo nuestro equipo de trabajo.</p>
+          </div>
+        </section>
+
+        <div className="historia-divider" />
+
+        <section className="historia-section">
+          <h2 className="historia-section-title">VISION</h2>
+          <div className="historia-section-body">
+            <p>Aspiramos a ser los Artesanos Cerveceros Marplatenses líderes en generar experiencias únicas, brindándole a la comunidad nuestra calidad humana, fusionando la cerveza con el arte y la cultura.</p>
+          </div>
+        </section>
+      </div>
+
       <Footer />
     </div>
   );

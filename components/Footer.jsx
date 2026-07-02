@@ -37,33 +37,6 @@ export default function Footer() {
 
       <div className="footer-divider" />
 
-      <div className="footer-middle">
-        <div className="footer-row-label">
-          <h4>Medios de pago</h4>
-        </div>
-        <div className="badge-row" aria-label="Medios de pago">
-          <span className="payment-badge">Visa</span>
-          <span className="payment-badge">Mastercard</span>
-          <span className="payment-badge">American Express</span>
-          <span className="payment-badge">Diners Club</span>
-          <span className="payment-badge">Cabal</span>
-          <span className="payment-badge">Naranja</span>
-          <span className="payment-badge">Tarjeta Shopping</span>
-          <span className="payment-badge">Mercado Pago</span>
-        </div>
-
-        <div className="footer-row-label">
-          <h4>Medios de envío</h4>
-        </div>
-        <div className="badge-row" aria-label="Medios de envío">
-          <span className="shipping-badge">Correo Argentino</span>
-          <span className="shipping-badge">EnvioNube</span>
-          <span className="shipping-badge">Andreani</span>
-        </div>
-      </div>
-
-      <div className="footer-divider" />
-
       <div className="footer-bottom">
         <small>Copyright Cerveza Baum - 2026. Todos los derechos reservados.</small>
         <small>Defensa de las y los consumidores. Para reclamos ingresá acá. / Botón de arrepentimiento</small>
