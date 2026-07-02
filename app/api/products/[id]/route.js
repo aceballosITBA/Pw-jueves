@@ -1,10 +1,20 @@
 import { NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
 import { archiveProduct, getProductById, saveProduct } from '../../../../lib/data-store';
 
-const hasAdminAccess = (request) => {
-  const expectedToken = process.env.ADMIN_API_TOKEN;
-  if (!expectedToken) return true;
-  return request.headers.get('x-admin-token') === expectedToken;
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+const hasAdminAccess = async (request) => {
+  const auth = request.headers.get('Authorization');
+  if (!auth?.startsWith('Bearer ')) return false;
+  const token = auth.slice(7);
+  const { data: { user }, error } = await supabaseAdmin.auth.getUser(token);
+  if (error || !user) return false;
+  const { data: profile } = await supabaseAdmin.from('profiles').select('rol').eq('id', user.id).single();
+  return profile?.rol === 'admin';
 };
 
 export async function GET(_request, { params }) {
@@ -18,7 +28,7 @@ export async function GET(_request, { params }) {
 }
 
 export async function PATCH(request, { params }) {
-  if (!hasAdminAccess(request)) {
+  if (!await hasAdminAccess(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -28,7 +38,7 @@ export async function PATCH(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
-  if (!hasAdminAccess(request)) {
+  if (!await hasAdminAccess(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

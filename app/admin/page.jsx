@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import Footer from '../../components/Footer';
+import { supabase } from '../../lib/supabase/client';
 
 const emptyProduct = {
   id: '',
@@ -21,17 +23,17 @@ const emptyProduct = {
 };
 
 export default function AdminPage() {
-  const [token, setToken] = useState('');
+  const [accessToken, setAccessToken] = useState('');
+  const [rolStatus, setRolStatus] = useState('loading'); // 'loading' | 'admin' | 'denied'
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState(emptyProduct);
   const [message, setMessage] = useState('');
   const [saving, setSaving] = useState(false);
 
-  const headers = useMemo(() => {
-    const nextHeaders = { 'content-type': 'application/json' };
-    if (token.trim()) nextHeaders['x-admin-token'] = token.trim();
-    return nextHeaders;
-  }, [token]);
+  const headers = {
+    'content-type': 'application/json',
+    ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
+  };
 
   const loadProducts = async () => {
     const response = await fetch('/api/products');
@@ -39,19 +41,29 @@ export default function AdminPage() {
     setProducts(data.data?.products || []);
   };
 
+  // Verificar sesión y rol al montar
   useEffect(() => {
-    const savedToken = localStorage.getItem('admin_api_token') || '';
-    setToken(savedToken);
+    const checkRol = async () => {
+      const { data } = await supabase.auth.getSession();
+      const token = data?.session?.access_token;
+      if (!token) { setRolStatus('denied'); return; }
+
+      setAccessToken(token);
+
+      const res = await fetch('/api/auth/rol', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const json = await res.json();
+      const rol = json.data?.rol;
+      setRolStatus(rol === 'admin' ? 'admin' : 'denied');
+    };
+
+    checkRol();
   }, []);
 
   useEffect(() => {
-    if (!token) return;
-    localStorage.setItem('admin_api_token', token);
-  }, [token]);
-
-  useEffect(() => {
-    loadProducts().catch(() => setProducts([]));
-  }, []);
+    if (rolStatus === 'admin') loadProducts().catch(() => setProducts([]));
+  }, [rolStatus]);
 
   const handleChange = (field) => (event) => {
     setForm((current) => ({ ...current, [field]: event.target.value }));
@@ -126,6 +138,38 @@ export default function AdminPage() {
     }
   };
 
+  if (rolStatus === 'loading') {
+    return (
+      <div className="app-container">
+        <main>
+          <section className="catalog-section card">
+            <p>Verificando acceso...</p>
+          </section>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (rolStatus === 'denied') {
+    return (
+      <div className="app-container">
+        <main>
+          <section className="catalog-section card">
+            <p className="eyebrow">Acceso denegado</p>
+            <h1>Solo administradores</h1>
+            <p>No tenés permiso para acceder a este panel. Iniciá sesión con una cuenta admin.</p>
+            <div className="checkout-empty-actions" style={{ marginTop: 16 }}>
+              <Link className="btn primary" href="/login">Iniciar sesión</Link>
+              <Link className="btn ghost" href="/">Volver al inicio</Link>
+            </div>
+          </section>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="app-container">
       <main>
@@ -133,11 +177,6 @@ export default function AdminPage() {
           <p className="eyebrow">Admin</p>
           <h1>Panel de catálogo</h1>
           <p>Este panel permite crear, editar y desactivar productos usando la API interna.</p>
-
-          <label className="checkout-field" style={{ maxWidth: 520 }}>
-            <span>Token admin</span>
-            <input value={token} onChange={(event) => setToken(event.target.value)} placeholder="ADMIN_API_TOKEN" />
-          </label>
 
           <form className="checkout-form-grid" onSubmit={handleSubmit} style={{ marginTop: 24 }}>
             <label className="checkout-field">

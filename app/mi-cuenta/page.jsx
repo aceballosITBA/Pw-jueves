@@ -75,7 +75,8 @@ export default function MiCuentaPage() {
     return () => { cancelled = true; };
   }, [user]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     clearAuth();
     setUser(null);
   };

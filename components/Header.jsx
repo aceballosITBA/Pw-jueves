@@ -13,6 +13,7 @@ export default function Header() {
   const [cartCount, setCartCount] = useState(0);
   const [searchValue, setSearchValue] = useState('');
   const [authUser, setAuthUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -26,20 +27,40 @@ export default function Header() {
 
       if (sessionUser) {
         setAuthUser(persistSupabaseAuth(sessionUser));
+        try {
+          const res = await fetch('/api/auth/rol', {
+            headers: { Authorization: `Bearer ${data.session.access_token}` }
+          });
+          const json = await res.json();
+          if (!cancelled) setIsAdmin(json.data?.rol === 'admin');
+        } catch {
+          // ignorar error de rol
+        }
       } else {
         setAuthUser(readAuthUser());
+        setIsAdmin(false);
       }
     };
 
     syncSupabaseSession();
 
-    const { data: authSubscription } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: authSubscription } = supabase.auth.onAuthStateChange(async (_event, session) => {
       const sessionUser = session?.user || null;
       if (sessionUser) {
         setAuthUser(persistSupabaseAuth(sessionUser));
+        try {
+          const res = await fetch('/api/auth/rol', {
+            headers: { Authorization: `Bearer ${session.access_token}` }
+          });
+          const json = await res.json();
+          setIsAdmin(json.data?.rol === 'admin');
+        } catch {
+          setIsAdmin(false);
+        }
       } else {
         clearAuth();
         setAuthUser(null);
+        setIsAdmin(false);
       }
     });
 
@@ -150,6 +171,9 @@ export default function Header() {
         <nav id="main-nav" className={`ml-nav ${menuOpen ? 'open' : ''}`} aria-label="Navegación principal">
           <Link href="/latas" className="ml-nav-link" onClick={() => setMenuOpen(false)}>Latas</Link>
           <Link href="/historia" className="ml-nav-link" onClick={() => setMenuOpen(false)}>Historia</Link>
+          {isAdmin && (
+            <Link href="/admin" className="ml-nav-link" style={{ background: 'rgba(0,0,0,.15)', borderRadius: 6 }} onClick={() => setMenuOpen(false)}>Admin</Link>
+          )}
           {authUser ? (
             <Link href="/mi-cuenta" className="ml-user" onClick={() => setMenuOpen(false)}>Hola, {authUser.name}</Link>
           ) : (

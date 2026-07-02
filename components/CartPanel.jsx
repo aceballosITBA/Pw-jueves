@@ -16,27 +16,24 @@ export default function CartPanel({ items = [], onChangeQuantity, onRemoveItem, 
     : 'Hola, quiero hacer un pedido en Baum.';
 
   return (
-    <aside className="cart-panel card" id="carrito">
-      <div className="section-head cart-head">
+    <aside className="cart-panel" id="carrito">
+      <div className="cart-head">
         <div>
           <h2>Carrito</h2>
-          <p>{totalItems} producto{totalItems === 1 ? '' : 's'} en selección</p>
+          <p>{totalItems} producto{totalItems === 1 ? '' : 's'}</p>
         </div>
         <button
           type="button"
           className="clear-filter"
-          onClick={() => {
-            if (!items.length) return;
-            if (confirm('¿Vaciar el carrito?')) onClearCart();
-          }}
+          onClick={() => { if (!items.length) return; if (confirm('¿Vaciar el carrito?')) onClearCart(); }}
           disabled={!items.length}
         >
-          Vaciar carrito
+          Vaciar
         </button>
       </div>
 
       {!items.length ? (
-        <p className="cart-empty">Todavía no agregaste productos. Elegí una cerveza y sumala al carrito para armar tu pedido.</p>
+        <p className="cart-empty">Todavía no agregaste productos. Elegí una cerveza y sumala al carrito.</p>
       ) : (
         <div className="cart-items">
           {items.map((item) => {
@@ -44,22 +41,22 @@ export default function CartPanel({ items = [], onChangeQuantity, onRemoveItem, 
             return (
               <article key={`${item.product.id}-${item.pack}`} className="cart-item">
                 <div className="cart-item-media">
-                  {item.product.images?.[0] ? (
-                    <img src={item.product.images[0]} alt={item.product.name} className="cart-item-thumb" />
-                  ) : null}
+                  {item.product.images?.[0]
+                    ? <img src={item.product.images[0]} alt={item.product.name} className="cart-item-thumb" />
+                    : <span style={{fontSize:'.65rem',fontWeight:700,color:'#8b6240'}}>BAUM</span>}
                 </div>
                 <div>
                   <p className="cart-item-title">{item.product.name}</p>
-                  <p className="cart-item-meta">Pack x{item.pack} · {formatCurrency(packPrice)} por pack</p>
-                  <p className="cart-item-meta">Subtotal: {formatCurrency(packPrice * item.quantity)}</p>
+                  <p className="cart-item-meta">Pack x{item.pack} · {formatCurrency(packPrice)}</p>
+                  <p className="cart-item-subtotal">{formatCurrency(packPrice * item.quantity)}</p>
                 </div>
                 <div className="cart-item-controls">
                   <div className="qty-control">
-                    <button type="button" onClick={() => onChangeQuantity(item.product.id, item.pack, item.quantity - 1)}>-</button>
+                    <button type="button" onClick={() => onChangeQuantity(item.product.id, item.pack, item.quantity - 1)}>−</button>
                     <span>{item.quantity}</span>
                     <button type="button" onClick={() => onChangeQuantity(item.product.id, item.pack, item.quantity + 1)}>+</button>
                   </div>
-                  <button type="button" className="cart-remove" onClick={() => onRemoveItem(item.product.id, item.pack)}>Quitar</button>
+                  <button type="button" className="cart-remove" onClick={() => onRemoveItem(item.product.id, item.pack)}>quitar</button>
                 </div>
               </article>
             );

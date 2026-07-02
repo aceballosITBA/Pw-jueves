@@ -6,9 +6,6 @@ import { persistSupabaseAuth } from './auth-utils';
 import GoogleLoginButton from './GoogleLoginButton';
 
 export default function AuthForm({
-  title = 'Ingresar',
-  description = 'Usá tu cuenta para continuar con el pedido.',
-  submitLabel = 'Continuar',
   onSuccess,
   onCancel,
   compact = false,
@@ -20,6 +17,9 @@ export default function AuthForm({
 }) {
   const router = useRouter();
   const [mode, setMode] = useState(defaultMode);
+  const title = mode === 'create' ? 'Crear cuenta' : 'Ingresar';
+  const description = mode === 'create' ? 'Completá tus datos para registrarte.' : 'Ingresá tu email para continuar.';
+  const submitLabel = mode === 'create' ? 'Crear cuenta' : 'Ingresar';
   const [step, setStep] = useState('email');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -106,6 +106,12 @@ export default function AuthForm({
               <strong>{email}</strong>
               <button type="button" className="auth-change-email" onClick={() => setStep('email')}>Cambiar</button>
             </div>
+            {mode === 'create' && (
+              <label>
+                Nombre
+                <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Tu nombre" autoComplete="name" />
+              </label>
+            )}
             <label>
               Contraseña
               <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" autoComplete={mode === 'create' ? 'new-password' : 'current-password'} />
@@ -120,6 +126,22 @@ export default function AuthForm({
           <button type="submit" className="btn primary" disabled={loading}>{step === 'email' ? 'Continuar' : submitLabel}</button>
         </div>
       </form>
+
+      <p style={{ textAlign: 'center', marginTop: '1rem', fontSize: '.93rem', color: 'var(--muted)' }}>
+        {mode === 'login' ? (
+          <>¿No tenés cuenta?{' '}
+            <button type="button" className="auth-change-email" onClick={() => { setMode('create'); setStep('email'); setError(''); }}>
+              Crear una
+            </button>
+          </>
+        ) : (
+          <>¿Ya tenés cuenta?{' '}
+            <button type="button" className="auth-change-email" onClick={() => { setMode('login'); setStep('email'); setError(''); }}>
+              Ingresar
+            </button>
+          </>
+        )}
+      </p>
 
       {showGoogleLogin && googlePlacement === 'bottom' ? (
         <div className="auth-google-bottom">

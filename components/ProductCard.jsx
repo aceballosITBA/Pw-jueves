@@ -8,7 +8,7 @@ const calcPrice = (base, pack) => {
 };
 const formatCurrency = (v) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(v);
 
-export default function ProductCard({ product, onSelect }) {
+export default function ProductCard({ product, onSelect, onAddToCart }) {
   const [imageError, setImageError] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
@@ -40,22 +40,31 @@ export default function ProductCard({ product, onSelect }) {
 
   return (
     <article className={`product-card ${product.id === 'ipa-mdp' ? 'distant-image' : ''}`} onClick={() => onSelect(product)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <div className="product-media">
-        {currentImage && !imageError ? <img src={currentImage} alt={product.name} onError={() => setImageError(true)} /> : <div className="product-image-placeholder"><span>BAUM</span><p>Imagen próximamente</p></div>}
-        <div className="product-overlay" />
-        <div className="product-content">
-          <p className="product-style">{product.name}</p>
-          <p className="product-unitary">{formatCurrency(unitPrice)} c/u</p>
-          <p className="product-price">{formatCurrency(totalPrice)} <small>pack x{activePack}</small></p>
-          <div className="pack-chips">
-            <button type="button" className={activePack === 6 ? 'pack-chip active' : 'pack-chip'} onPointerEnter={() => setActivePack(6)} onFocus={() => setActivePack(6)} onClick={(event) => event.stopPropagation()}>x6</button>
-            <button type="button" className={activePack === 12 ? 'pack-chip premium active' : 'pack-chip premium'} onPointerEnter={() => setActivePack(12)} onFocus={() => setActivePack(12)} onClick={(event) => event.stopPropagation()}>x12</button>
-            <button type="button" className={activePack === 24 ? 'pack-chip premium active' : 'pack-chip premium'} onPointerEnter={() => setActivePack(24)} onFocus={() => setActivePack(24)} onClick={(event) => event.stopPropagation()}>x24</button>
-          </div>
-          <p className="pack-discount-note" aria-live="polite">
-            {activePack === 12 ? 'Se adquiere un 10% de descuento.' : activePack === 24 ? 'Se adquiere un 20% de descuento.' : ' '}
-          </p>
+      <div className="product-img-wrap">
+        {currentImage && !imageError ? <img src={currentImage} alt={product.name} onError={() => setImageError(true)} /> : <div className="product-image-placeholder"><span>BAUM</span><p>Próximamente</p></div>}
+      </div>
+      <div className="product-content">
+        <p className="product-style-tag">{product.style}</p>
+        <p className="product-name">{product.name}</p>
+        <p className="product-unitary">{formatCurrency(unitPrice)} c/u</p>
+        <p className="product-price">{formatCurrency(totalPrice)} <small>pack x{activePack}</small></p>
+        <div className="pack-chips">
+          <button type="button" className={activePack === 6 ? 'pack-chip active' : 'pack-chip'} onPointerEnter={() => setActivePack(6)} onFocus={() => setActivePack(6)} onClick={(event) => event.stopPropagation()}>x6</button>
+          <button type="button" className={activePack === 12 ? 'pack-chip premium active' : 'pack-chip premium'} onPointerEnter={() => setActivePack(12)} onFocus={() => setActivePack(12)} onClick={(event) => event.stopPropagation()}>x12</button>
+          <button type="button" className={activePack === 24 ? 'pack-chip premium active' : 'pack-chip premium'} onPointerEnter={() => setActivePack(24)} onFocus={() => setActivePack(24)} onClick={(event) => event.stopPropagation()}>x24</button>
         </div>
+        <p className="pack-discount-note" aria-live="polite">
+          {activePack === 12 ? '10% off' : activePack === 24 ? '20% off' : ''}
+        </p>
+        {onAddToCart && (
+          <button
+            type="button"
+            className="btn-add-to-cart"
+            onClick={(e) => { e.stopPropagation(); onAddToCart(product, activePack); }}
+          >
+            Agregar al carrito
+          </button>
+        )}
       </div>
     </article>
   );

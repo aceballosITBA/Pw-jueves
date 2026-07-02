@@ -1,10 +1,20 @@
+import { createClient } from '@supabase/supabase-js';
 import { listProducts, saveProduct } from '../../../lib/data-store';
 import { successResponse, errorResponse } from '../../../lib/api-response';
 
-const hasAdminAccess = (request) => {
-  const expectedToken = process.env.ADMIN_API_TOKEN;
-  if (!expectedToken) return true;
-  return request.headers.get('x-admin-token') === expectedToken;
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+const hasAdminAccess = async (request) => {
+  const auth = request.headers.get('Authorization');
+  if (!auth?.startsWith('Bearer ')) return false;
+  const token = auth.slice(7);
+  const { data: { user }, error } = await supabaseAdmin.auth.getUser(token);
+  if (error || !user) return false;
+  const { data: profile } = await supabaseAdmin.from('profiles').select('rol').eq('id', user.id).single();
+  return profile?.rol === 'admin';
 };
 
 export async function GET() {
@@ -17,7 +27,7 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  if (!hasAdminAccess(request)) {
+  if (!await hasAdminAccess(request)) {
     return errorResponse('No autorizado.', 401, 'UNAUTHORIZED');
   }
 

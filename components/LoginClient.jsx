@@ -11,6 +11,7 @@ export default function LoginClient() {
   const searchParams = useSearchParams();
   const nextPath = searchParams.get('next') || '/mi-cuenta';
   const [user, setUser] = useState(null);
+  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -36,12 +37,27 @@ export default function LoginClient() {
     };
   }, []);
 
-  const handleSuccess = () => {
-    setUser(readAuthUser());
+  const handleSuccess = async () => {
+    setRedirecting(true);
+    try {
+      const { data } = await supabase.auth.getSession();
+      const token = data?.session?.access_token;
+      if (token) {
+        const res = await fetch('/api/auth/rol', { headers: { Authorization: `Bearer ${token}` } });
+        const json = await res.json();
+        if (json.data?.rol === 'admin') {
+          router.push('/admin');
+          return;
+        }
+      }
+    } catch {
+      // si falla la verificación de rol, redirige normalmente
+    }
     router.push(nextPath);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     clearAuth();
     setUser(null);
   };
@@ -56,7 +72,11 @@ export default function LoginClient() {
           </div>
 
           <section className="auth-marketplace-single card">
-            {user ? (
+            {redirecting ? (
+              <div className="auth-session-card" style={{ textAlign: 'center', padding: '2rem' }}>
+                <p style={{ color: 'var(--muted)' }}>Redirigiendo...</p>
+              </div>
+            ) : user ? (
               <div className="auth-session-card auth-session-card-compact">
                 <p className="eyebrow">Baum</p>
                 <h1>Ingresaste correctamente</h1>
@@ -68,12 +88,8 @@ export default function LoginClient() {
               </div>
             ) : (
               <AuthForm
-                title="Ingresá a tu cuenta"
-                description="Primero tu email, después la contraseña."
-                submitLabel="Ingresar"
                 onSuccess={handleSuccess}
                 showHeader={true}
-                showTabs={false}
                 showGoogleLogin={true}
                 googlePlacement="bottom"
               />
