@@ -106,7 +106,8 @@ export async function POST(request) {
     });
 
     return successResponse({ order }, 201);
-  } catch {
-    return errorResponse('No se pudo crear el pedido.', 500, 'SERVER_ERROR');
+  } catch (err) {
+    const msg = err?.message || err?.details || JSON.stringify(err) || 'SERVER_ERROR';
+    return errorResponse(`No se pudo crear el pedido: ${msg}`, 500, 'SERVER_ERROR');
   }
 }
