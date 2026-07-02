@@ -70,7 +70,12 @@ export default function AuthForm({
 
       const sessionUser = authResult.data?.user;
       if (!sessionUser) {
-        setError(mode === 'create' ? 'Revisá tu correo para confirmar la cuenta.' : 'No pudimos iniciar sesión.');
+        setError(mode === 'create' ? 'Revisá tu correo para confirmar la cuenta.' : 'No pudimos iniciar sesión. Revisá email y contraseña.');
+        return;
+      }
+
+      if (mode === 'create' && !authResult.data?.session) {
+        setError('¡Cuenta creada! Revisá tu correo y confirmá tu email. Luego volvé a ingresar con tu contraseña.');
         return;
       }
 

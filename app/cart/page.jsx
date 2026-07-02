@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CartPanel from '../../components/CartPanel';
-import Footer from '../../components/Footer';
 import ConfirmModal from '../../components/ConfirmModal';
 import CheckoutAuthModal from '../../components/CheckoutAuthModal';
 import { useRef } from 'react';
@@ -150,7 +149,6 @@ export default function CartPage() {
           ) : null}
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

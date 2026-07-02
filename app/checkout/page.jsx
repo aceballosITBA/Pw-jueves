@@ -2,9 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Footer from '../../components/Footer';
 import AuthForm from '../../components/AuthForm';
-import { readAuthUser } from '../../components/auth-utils';
 import { supabase } from '../../lib/supabase/client';
 
 const formatCurrency = (value) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(value || 0);
@@ -51,8 +49,6 @@ export default function CheckoutPage() {
           name: sessionUser.user_metadata?.name || sessionUser.email?.split('@')[0] || 'Usuario',
           email: sessionUser.email || ''
         });
-      } else {
-        setUser(null);
       }
     });
 
@@ -108,7 +104,11 @@ export default function CheckoutPage() {
       const { data } = await supabase.auth.getSession();
       const accessToken = data?.session?.access_token;
 
-      if (!accessToken) return;
+      if (!accessToken) {
+        alert('Tu sesión venció. Por favor, iniciá sesión de nuevo para continuar.');
+        router.push('/login?next=/checkout');
+        return;
+      }
 
       const order = {
         ...pendingOrder,
@@ -178,7 +178,6 @@ export default function CheckoutPage() {
             </div>
           </section>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -318,7 +317,6 @@ export default function CheckoutPage() {
           </section>
         )}
       </main>
-      <Footer />
     </div>
   );
 }
