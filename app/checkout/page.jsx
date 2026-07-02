@@ -97,14 +97,18 @@ export default function CheckoutPage() {
 
   const handleCompleteCheckout = async () => {
     if (!pendingOrder || !user) return;
+
+    if (!shipping.name.trim()) { alert('Completá tu nombre y apellido.'); return; }
+    if (!shipping.email.trim()) { alert('Completá tu email.'); return; }
+    if (!shipping.phone.trim()) { alert('Completá tu teléfono.'); return; }
+    if (!shipping.address.trim()) { alert('Completá la dirección de entrega.'); return; }
+    if (!shipping.city.trim()) { alert('Completá la ciudad.'); return; }
+
     try {
       const { data } = await supabase.auth.getSession();
       const accessToken = data?.session?.access_token;
 
-      if (!accessToken) {
-        setCompletedOrder(null);
-        return;
-      }
+      if (!accessToken) return;
 
       const order = {
         ...pendingOrder,
@@ -136,6 +140,24 @@ export default function CheckoutPage() {
       localStorage.setItem('last_checkout_order', JSON.stringify(createdOrder));
       try { window.dispatchEvent(new Event('orders:updated')); } catch (e) {}
       try { window.dispatchEvent(new Event('cart:updated')); } catch (e) {}
+
+      // Si elige Mercado Pago, ir directo al checkout de MP
+      if (paymentMethod === 'mercadopago') {
+        const mpRes = await fetch('/api/pagos/crear-preferencia', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', Authorization: `Bearer ${accessToken}` },
+          body: JSON.stringify({ orden_id: createdOrder.id })
+        });
+        if (mpRes.ok) {
+          const mpData = await mpRes.json();
+          const initPoint = mpData.data?.init_point;
+          if (initPoint) {
+            window.location.href = initPoint;
+            return;
+          }
+        }
+      }
+
       setCompletedOrder(createdOrder);
     } catch (e) {
       setCompletedOrder(null);
@@ -290,7 +312,7 @@ export default function CheckoutPage() {
               {user ? (
                 <button className="btn primary checkout-action" onClick={handleCompleteCheckout}>Confirmar y generar pedido</button>
               ) : null}
-              <p className="checkout-note">Luego podés conectar Mercado Pago real sin cambiar el diseño.</p>
+
               <Link className="btn ghost checkout-action" href="/cart">Volver al carrito</Link>
             </aside>
           </section>

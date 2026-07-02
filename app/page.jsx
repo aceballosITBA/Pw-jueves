@@ -8,14 +8,13 @@ import MarketplaceHighlights from '../components/MarketplaceHighlights';
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
 
 export default function HomePage() {
-  const [isAgeVerified, setIsAgeVerified] = useState(() => {
-    try {
-      return !!sessionStorage.getItem('age_verified');
-    } catch (e) {
-      return false;
-    }
-  });
+  const [isAgeVerified, setIsAgeVerified] = useState(false);
   useEffect(() => {
+    try {
+      setIsAgeVerified(!!sessionStorage.getItem('age_verified'));
+    } catch (e) {
+      setIsAgeVerified(false);
+    }
     const onAge = () => {
       try {
         setIsAgeVerified(!!sessionStorage.getItem('age_verified'));
@@ -91,6 +90,7 @@ export default function HomePage() {
         <HeroSection />
         <MarketplaceHighlights products={products} />
         <section className="catalog-section" id="catalogo">
+          <h1 className="section-title">Catálogo de cervezas artesanales</h1>
           <ProductList products={products} onSelectProduct={() => {}} onAddToCart={handleAddToCart} />
         </section>
       </main>
