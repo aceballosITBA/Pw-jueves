@@ -1,57 +1,50 @@
 import Footer from '../../components/Footer';
 
-const milestones = [
-  { year: '2015', title: 'Primeras recetas', copy: 'Nacen los primeros lotes de prueba con foco en balance, tomabilidad y carácter artesanal.' },
-  { year: '2019', title: 'Crecimiento de la marca', copy: 'Baum consolida una identidad propia y una propuesta más amplia de estilos y packs.' },
-  { year: '2026', title: 'Experiencia digital', copy: 'La tienda se vuelve un punto de entrada para conocer la historia, comparar estilos y preparar pedidos.' },
-];
-
-const values = [
-  { title: 'Calidad primero', copy: 'Cada receta prioriza materia prima, control y consistencia en cada tirada.' },
-  { title: 'Cultura cervecera', copy: 'La marca acerca estilos clásicos y modernos con lenguaje simple y contenido claro.' },
-  { title: 'Momentos compartidos', copy: 'Todo está pensado para picadas, reuniones y experiencias de consumo con identidad.' },
-];
-
 export default function HistoriaPage() {
   return (
     <div className="app-container">
       <main>
-        <section className="history-hero card">
-          <div>
-            <p className="eyebrow">Nuestra historia</p>
-            <h1>Baum y la cultura cervecera</h1>
-            <p>Baum nace desde la idea de que cada cerveza artesanal puede contar una historia: del productor, de la receta y del momento en que se comparte.</p>
-          </div>
-          <div className="history-hero-note">
-            <h2>Una marca para contar mejor</h2>
-            <p>La tienda queda preparada para sumar contenidos, notas de proceso, lanzamientos y relatos por estilo sin rehacer la estructura.</p>
-          </div>
-        </section>
-
-        <section className="history-grid">
-          {values.map((item) => (
-            <article key={item.title} className="card history-card">
-              <h2>{item.title}</h2>
-              <p>{item.copy}</p>
-            </article>
-          ))}
-        </section>
-
-        <section className="card history-timeline">
-          <div className="section-head">
-            <h2>Hitos de la marca</h2>
-            <p>Una base lista para ir agregando fechas, lanzamientos y cambios de identidad.</p>
-          </div>
-          <div className="timeline-list">
-            {milestones.map((item) => (
-              <article key={item.year} className="timeline-item">
-                <p className="timeline-year">{item.year}</p>
-                <div>
-                  <h3>{item.title}</h3>
-                  <p>{item.copy}</p>
-                </div>
-              </article>
-            ))}
+        <section className="historia-hero card">
+          <h1 className="historia-title">NOS UNE UN MISMO ESPÍRITU</h1>
+          <div className="historia-body">
+            <div className="historia-claim">
+              <p>
+                NOS QUISIMOS AVENTURAR ALLÁ POR EL 2009 EN DESCUBRIR Y CONOCER LA ELABORACIÓN DE
+                UN PRODUCTO QUE NOS VENÍA CAUTIVANDO COMO CONSUMIDORES: LA CERVEZA ARTESANAL.
+                DECIDIMOS UTILIZAR LA PALABRA BAUM (ÁRBOL EN ALEMÁN), YA QUE REPRESENTA LA
+                PROTECCIÓN DE NUESTRA RAZA, EL EQUILIBRIO DE LA NATURALEZA, QUIEN NOS ENTREGA SUS
+                FRUTOS, NOS PROTEGE DEL SOL Y LA LLUVIA.{' '}
+                <strong>
+                  HOY, MÁS DE UNA DÉCADA DESPUÉS, Y CON MUCHOS ESTILOS REALIZADOS EN NUESTRO
+                  HABER, DECIDIMOS TRAER ESTE MATERIAL.
+                </strong>
+              </p>
+            </div>
+            <div className="historia-text">
+              <p>
+                Decidimos compartir a través de este catálogo, nuestras fichas técnicas: un material
+                que elaboramos específicamente para nuestras franquicias, y mediante el cual llevamos
+                a cabo la capacitación en cada estilo a través del cual llevamos a cabo la
+                capacitación. Para darle un valor agregado importante a todo nuestro personal a lo
+                largo del país nos capacitamos en cada estilo a través del cual llevamos la
+                capacitación en cada estilo.
+              </p>
+              <p>
+                Porcentaje de maltas de cada estilo, así como los momentos de adición de lúpulos
+                que forman parte de la receta. De este modo, aquellas almas curiosas no solo podrán
+                adentrarse en la estructura y anatomía de cada una de nuestras cervezas, sino
+                también en llevar a cabo el estilo a través de su propio equipamiento. Finalmente,
+                decidimos incluir otras características como: historia de cada estilo, categoría
+                BJCP, código QR hacia más material, gráficos araña, entre los aspectos más
+                destacados.
+              </p>
+              <p>
+                Esperamos que puedas disfrutar de este catálogo tanto como nosotros disfrutamos
+                de vivir de aquello que nos gusta, y que te animes a replicar esos estilos favoritos
+                que disfrutas de Baum.
+              </p>
+              <p className="historia-firma">El equipo de Baum.</p>
+            </div>
           </div>
         </section>
       </main>

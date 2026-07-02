@@ -4,9 +4,9 @@ export default function Footer() {
       <div className="footer-top">
         <section className="footer-col">
           <h4>Categorías</h4>
-          <a href="#catalogo">Latas</a>
-          <a href="#catalogo">Gift Packs</a>
-          <a href="#catalogo">El club de los descuentos</a>
+          <a href="/latas?style=Rubia">Rubias</a>
+          <a href="/latas?style=IPA">IPA</a>
+          <a href="/latas?style=Negra">Negras</a>
         </section>
 
         <section className="footer-col">
@@ -67,7 +67,6 @@ export default function Footer() {
       <div className="footer-bottom">
         <small>Copyright Cerveza Baum - 2026. Todos los derechos reservados.</small>
         <small>Defensa de las y los consumidores. Para reclamos ingresá acá. / Botón de arrepentimiento</small>
-        <small>creado con tiendanube</small>
       </div>
     </footer>
   );

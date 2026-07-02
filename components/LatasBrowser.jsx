@@ -26,6 +26,8 @@ export default function LatasBrowser() {
 
   useEffect(() => {
     setSearchTerm(searchParams.get('search') || '');
+    const styleParam = searchParams.get('style');
+    if (styleParam) setStyleFilter(styleParam);
   }, [searchParams]);
 
   const styles = useMemo(() => {
