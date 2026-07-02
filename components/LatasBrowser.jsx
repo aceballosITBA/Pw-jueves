@@ -5,6 +5,13 @@ import ProductList from './ProductList';
 import Footer from './Footer';
 import { useSearchParams } from 'next/navigation';
 
+const CATEGORY_KEYWORDS = {
+  rubia: ['lager dorada', 'maldita honey', 'blond'],
+  ipa: ['ipa'],
+  negra: ['porter', 'glassstone'],
+  roja: ['scottish', 'iron ale', 'old ley'],
+};
+
 const calcPrice = (base, pack) => {
   if (pack === 12) return Math.round(base * 2 * 0.9);
   if (pack === 24) return Math.round(base * 4 * 0.8);
@@ -15,6 +22,7 @@ export default function LatasBrowser() {
   const searchParams = useSearchParams();
   const [products, setProducts] = useState([]);
   const [styleFilter, setStyleFilter] = useState('all');
+  const [categoryFilter, setCategoryFilter] = useState('');
   const [packFilter, setPackFilter] = useState(6);
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
@@ -28,6 +36,8 @@ export default function LatasBrowser() {
     setSearchTerm(searchParams.get('search') || '');
     const styleParam = searchParams.get('style');
     if (styleParam) setStyleFilter(styleParam);
+    const categoryParam = searchParams.get('category');
+    setCategoryFilter(categoryParam ? categoryParam.toLowerCase() : '');
   }, [searchParams]);
 
   const styles = useMemo(() => {
@@ -39,17 +49,27 @@ export default function LatasBrowser() {
     const term = searchTerm.trim().toLowerCase();
     const min = minPrice ? Number(minPrice) : -Infinity;
     const max = maxPrice ? Number(maxPrice) : Infinity;
+    const categoryKeywords = categoryFilter ? (CATEGORY_KEYWORDS[categoryFilter] || []) : [];
+
     return products.filter((p) => {
+      const nameLower = p.name.toLowerCase();
+
+      if (categoryKeywords.length > 0) {
+        if (!categoryKeywords.some((kw) => nameLower.includes(kw))) return false;
+      } else {
+        if (styleFilter !== 'all' && p.style !== styleFilter) return false;
+      }
+
       if (term) {
         const haystack = `${p.name} ${p.style} ${p.description}`.toLowerCase();
         if (!haystack.includes(term)) return false;
       }
-      if (styleFilter !== 'all' && p.style !== styleFilter) return false;
+
       const packPrice = calcPrice(p.pricePack6, Number(packFilter));
       if (packPrice < min || packPrice > max) return false;
       return true;
     });
-  }, [products, styleFilter, packFilter, minPrice, maxPrice, searchTerm]);
+  }, [products, styleFilter, categoryFilter, packFilter, minPrice, maxPrice, searchTerm]);
 
   const handleAddToCart = async (product, pack = 6) => {
     try {

@@ -4,9 +4,10 @@ export default function Footer() {
       <div className="footer-top">
         <section className="footer-col">
           <h4>Categorías</h4>
-          <a href="/latas?style=Rubia">Rubias</a>
-          <a href="/latas?style=IPA">IPA</a>
-          <a href="/latas?style=Negra">Negras</a>
+          <a href="/latas?category=rubia">Rubias</a>
+          <a href="/latas?category=ipa">IPA</a>
+          <a href="/latas?category=negra">Negras</a>
+          <a href="/latas?category=roja">Rojas</a>
         </section>
 
         <section className="footer-col">
