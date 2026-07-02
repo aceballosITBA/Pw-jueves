@@ -33,7 +33,6 @@ export default function PacksDescuentoPage() {
             discountPct: 20,
           },
         ]);
-        // Sort by savings descending: más caro × mayor descuento primero
         allDeals.sort((a, b) => b.savings - a.savings);
         setDeals(allDeals);
       })
@@ -43,44 +42,43 @@ export default function PacksDescuentoPage() {
   return (
     <div className="app-container">
       <main>
-        <section className="card deals-hero">
-          <p className="eyebrow">Ofertas</p>
-          <h1>Packs con descuento</h1>
-          <p>Cuanto más comprás, más ahorrás.</p>
-          <div className="deals-hero-tags">
-            <span className="deal-tag">Pack x12 · 10% off</span>
-            <span className="deal-tag">Pack x24 · 20% off</span>
+        <div className="deals-banner">
+          <div className="deals-banner-inner">
+            <p className="deals-banner-eyebrow">Baum Beer Store</p>
+            <h1 className="deals-banner-title">Packs con descuento</h1>
+            <div className="deals-banner-tags">
+              <span className="deals-banner-tag">Pack x12 · 10% OFF</span>
+              <span className="deals-banner-tag">Pack x24 · 20% OFF</span>
+            </div>
           </div>
-        </section>
+        </div>
 
         {loading ? (
-          <p style={{ textAlign: 'center', color: 'var(--muted)', padding: '2rem' }}>Calculando mejores ofertas...</p>
+          <p style={{ textAlign: 'center', color: 'var(--muted)', padding: '3rem' }}>Calculando mejores ofertas...</p>
         ) : (
-          <section className="deals-grid">
+          <section className="ranking-grid">
             {deals.map((deal) => (
-              <article key={`${deal.product.id}-${deal.pack}`} className="card deal-card">
-                <div className={`deal-badge deal-badge-${deal.discountPct}`}>-{deal.discountPct}%</div>
-                <div className="deal-img-wrap">
+              <Link key={`${deal.product.id}-${deal.pack}`} href="/latas" className="ranking-card">
+                <div className="ranking-badge-wrap">
+                  <span className={`ranking-badge ranking-badge-deal${deal.discountPct}`}>
+                    {deal.discountPct}% OFF · Pack x{deal.pack}
+                  </span>
+                </div>
+                <div className="ranking-img-wrap">
                   {deal.product.images?.[0] ? (
-                    <img src={deal.product.images[0]} alt={deal.product.name} className="deal-img" />
+                    <img src={deal.product.images[0]} alt={deal.product.name} className="ranking-img" />
                   ) : (
-                    <div className="deal-img-placeholder" />
+                    <div className="ranking-img-placeholder" />
                   )}
                 </div>
-                <div className="deal-info">
-                  <p className="eyebrow deal-style">{deal.product.style}</p>
-                  <h3 className="deal-name">{deal.product.name}</h3>
-                  <p className="deal-pack-label">Pack x{deal.pack}</p>
-                  <div className="deal-prices">
-                    <span className="deal-old">{formatCurrency(deal.fullPrice)}</span>
-                    <strong className="deal-new">{formatCurrency(deal.packPrice)}</strong>
-                  </div>
-                  <p className="deal-savings">Ahorrás {formatCurrency(deal.savings)}</p>
+                <div className="ranking-card-body">
+                  <p className="ranking-card-old">{formatCurrency(deal.fullPrice)}</p>
+                  <p className="ranking-card-price">{formatCurrency(deal.packPrice)}</p>
+                  <p className="ranking-card-name">{deal.product.name}</p>
+                  <p className="ranking-card-style">{deal.product.style}</p>
+                  <p className="ranking-card-savings">Ahorrás {formatCurrency(deal.savings)}</p>
                 </div>
-                <Link href="/latas" className="btn primary deal-btn">
-                  Comprar
-                </Link>
-              </article>
+              </Link>
             ))}
           </section>
         )}
