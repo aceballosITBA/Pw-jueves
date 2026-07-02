@@ -126,7 +126,10 @@ export default function CheckoutPage() {
         body: JSON.stringify(order)
       });
 
-      if (!response.ok) throw new Error('API error');
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData?.error || `Error ${response.status}`);
+      }
       const dataOrder = await response.json();
       const createdOrder = dataOrder.data?.order || order;
 
@@ -160,7 +163,7 @@ export default function CheckoutPage() {
 
       setCompletedOrder(createdOrder);
     } catch (e) {
-      setCompletedOrder(null);
+      alert('No se pudo procesar el pedido. ' + (e?.message || 'Intentá de nuevo.'));
     }
   };
 
